@@ -25,10 +25,7 @@ public class CreateDB {
             e.printStackTrace();
         }
         try (Connection con = DriverManager.getConnection(LOCALHOST_5432 + DB_NAME, USER, PASSWORD)) {
-//            CreateDB.createTable(BaseData.defaultProducts());
-//            CreateDB.createTable(BaseData.defaultSuppliers());
-//            CreateDB.createTable(BaseData.defaultUsers());
-//            CreateDB.createTable(BaseData.defaultProductCategories());
+//            CreateDB.createTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
