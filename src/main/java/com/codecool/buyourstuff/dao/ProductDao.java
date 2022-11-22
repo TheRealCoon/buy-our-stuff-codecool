@@ -11,6 +11,9 @@ public interface ProductDao {
     Product find(int id);
     void remove(int id);
     void clear();
+
+    List<Product> getAll();
+
     List<Product> getBy(Supplier supplier);
     List<Product> getBy(ProductCategory productCategory);
 }
