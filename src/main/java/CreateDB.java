@@ -39,6 +39,9 @@ public class CreateDB {
             createDB.createProductsTable();
             createDB.createUsersTable();
             createDB.createLineItemsTable();
+            /*ATTENTION: if you run this file multiple times, then the tables will be filled with the same data multiple times
+                    comment out the 4 lines below after running it once
+             */
             createDB.addDataToSuppliersTable();
             createDB.addDataToProductCategoriesTable();
             createDB.addDataToProductsTable();
@@ -169,8 +172,8 @@ public class CreateDB {
             ps.setFloat(2, Float.parseFloat(product.getPrice().split(" ")[0]));
             ps.setString(3, product.getDefaultCurrency().toString());
             ps.setString(4, product.getDescription());
-            ps.setString(5, product.getSupplier().getName());
-            ps.setString(6, product.getProductCategory().getName());
+            ps.setString(5, product.getProductCategory().getName());
+            ps.setString(6, product.getSupplier().getName());
             ps.execute();
         }
     }
