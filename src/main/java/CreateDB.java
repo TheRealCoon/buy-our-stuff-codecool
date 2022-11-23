@@ -1,3 +1,4 @@
+import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.Supplier;
 import com.codecool.buyourstuff.util.BaseData;
 
@@ -140,9 +141,19 @@ public class CreateDB {
             ps = connection.prepareStatement(SqlQuery);
             ps.setString(1, supplier.getName());
             ps.setString(1, supplier.getDescription());
+            ps.execute();
         }
     }
-    private void addDataToProductCategoriesTable() {
+    private void addDataToProductCategoriesTable() throws SQLException {
+        String SqlQuery = "INSERT INTO product_categories(name, description, department) VALUES (?, ?, ?)";
+        PreparedStatement ps;
+        for (ProductCategory pc: BaseData.defaultProductCategories()) {
+            ps = connection.prepareStatement(SqlQuery);
+            ps.setString(1, pc.getName());
+            ps.setString(1, pc.getDescription());
+            ps.setString(1, pc.getDepartment());
+            ps.execute();
+        }
 
     }
     private void addDataToCartsTable() {
