@@ -67,12 +67,12 @@ public class UserDaoFile implements UserDao {
     }
 
     @Override
-    public boolean isNameAvailable(String username) {
+    public boolean isNameAvailable(String name) {
         try (Scanner scanner = new Scanner(USER_FILE)) {
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()) {
                 scanner.findInLine("name=");
-                if (username.equals(scanner.next())) return false;
+                if (name.equals(scanner.next())) return false;
                 scanner.nextLine();
             }
             return true;
