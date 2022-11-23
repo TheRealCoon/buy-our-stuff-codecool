@@ -46,7 +46,15 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public void remove(int id) {
-
+        String SqlQuery = "DELETE FROM cart WHERE id = ?;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.setInt(1, id);
+            String currency = ps.executeQuery().getString(1);
+            if (!ps.execute()) throw new DataNotFoundException("No such cart");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
