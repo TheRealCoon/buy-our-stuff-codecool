@@ -39,13 +39,6 @@ public class CreateDB {
             createDB.createProductsTable();
             createDB.createUsersTable();
             createDB.createLineItemsTable();
-            /*ATTENTION: if you run this file multiple times, then the tables will be filled with the same data multiple times
-                    comment out the 4 lines below after running it once
-             */
-            createDB.addDataToSuppliersTable();
-            createDB.addDataToProductCategoriesTable();
-            createDB.addDataToProductsTable();
-            createDB.addDataToUsersTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -137,56 +130,5 @@ public class CreateDB {
         statement.execute(SqlQuery);
     }
 
-    private void addDataToSuppliersTable() throws SQLException {
-        String SqlQuery = "INSERT INTO suppliers(name, description) VALUES (?, ?)";
-        PreparedStatement ps;
-        for (Supplier supplier : BaseData.defaultSuppliers()) {
-            ps = connection.prepareStatement(SqlQuery);
-            ps.setString(1, supplier.getName());
-            ps.setString(2, supplier.getDescription());
-            ps.execute();
-        }
-    }
-
-    private void addDataToProductCategoriesTable() throws SQLException {
-        String SqlQuery = "INSERT INTO product_categories(name, description, department) VALUES (?, ?, ?)";
-        PreparedStatement ps;
-        for (ProductCategory pc : BaseData.defaultProductCategories()) {
-            ps = connection.prepareStatement(SqlQuery);
-            ps.setString(1, pc.getName());
-            ps.setString(2, pc.getDescription());
-            ps.setString(3, pc.getDepartment());
-            ps.execute();
-        }
-    }
-
-    private void addDataToProductsTable() throws SQLException {
-        String SqlQuery = "INSERT INTO products(name, price, currency, description, product_category_id, supplier_id) " +
-                "VALUES (?, ?, ?, ?, (" +
-                "SELECT product_category_id FROM product_categories as pc WHERE pc.\"name\" = ?), (" +
-                "SELECT supplier_id FROM suppliers as s WHERE s.\"name\" = ?));";
-        PreparedStatement ps;
-        for (Product product : BaseData.defaultProducts()) {
-            ps = connection.prepareStatement(SqlQuery);
-            ps.setString(1, product.getName());
-            ps.setFloat(2, Float.parseFloat(product.getPrice().split(" ")[0]));
-            ps.setString(3, product.getDefaultCurrency().toString());
-            ps.setString(4, product.getDescription());
-            ps.setString(5, product.getProductCategory().getName());
-            ps.setString(6, product.getSupplier().getName());
-            ps.execute();
-        }
-    }
-
-    private void addDataToUsersTable() throws SQLException {
-        String SqlQuery = "INSERT INTO users(name, password) VALUES (?, ?)";
-        PreparedStatement ps;
-        for (User user : BaseData.defaultUsers()) {
-            ps = connection.prepareStatement(SqlQuery);
-            ps.setString(1, user.getName());
-            ps.setString(2, user.getPassword());
-            ps.execute();
-        }
-    }
 
 }
