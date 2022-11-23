@@ -46,7 +46,15 @@ public class UserDaoFile implements UserDao {
             user.setId(nextUserId++);
 
             try (FileWriter fileWriter = new FileWriter(USER_FILE, true)) {
-                fileWriter.append(user.toString());
+                fileWriter
+                        .append(String.valueOf(user.getId()))
+                        .append(',')
+                        .append(user.getName())
+                        .append(',')
+                        .append(user.getPassword())
+                        .append(',')
+                        .append(String.valueOf(user.getCartId()))
+                        .append('\n');
             } catch (IOException e) {
                 e.printStackTrace();
             }
