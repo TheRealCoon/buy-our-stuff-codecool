@@ -5,6 +5,7 @@ import com.codecool.buyourstuff.dao.DataManager;
 import com.codecool.buyourstuff.dao.UserDao;
 import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.User;
+import com.codecool.buyourstuff.model.UserDTO;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -65,9 +66,13 @@ public class UserDaoFile implements UserDao {
     public User find(String name, String password) {
         try (Scanner scanner = new Scanner(USER_FILE)) {
             while (scanner.hasNextLine()) {
-                User user = readUserFromLine(scanner.nextLine());
-                if (name.equals(user.getName()) && BCrypt.checkpw(password, user.getPassword()))
-                    return user;
+                UserDTO userDTO = new UserDTO(
+                        scanner.nextInt(),
+                        scanner.next(),
+                        scanner.next(),
+                        scanner.nextInt());
+                if (name.equals(userDTO.getName()) && BCrypt.checkpw(password, userDTO.getPassword()))
+                    return new User(userDTO);
             }
             throw new DataNotFoundException("No such user. Name or password may be incorrect.");
         } catch (IOException e) {
