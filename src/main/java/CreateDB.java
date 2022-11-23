@@ -27,19 +27,21 @@ public class CreateDB {
             CreateDB createDB = new CreateDB(con);
             createDB.createProductsTable();
             createDB.createSuppliersTable();
+            createDB.createProductCategoriesTable();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void createDataBase() throws SQLException {
-        String SqlQuery = "CREATE DATABASE " + DB_NAME;
+        String SqlQuery = "CREATE DATABASE " + DB_NAME +";";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
 
     private void createProductsTable() throws SQLException {
-        String SqlQuery = "CREATE TABLE products (" +
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS products (" +
                             "product_id serial PRIMARY KEY," +
                             "\"name\" varchar(40) NOT NULL," +
                             "price integer NOT NULL," +
@@ -52,10 +54,20 @@ public class CreateDB {
     }
 
     private void createSuppliersTable() throws SQLException {
-        String SqlQuery = "CREATE TABLE suppliers (" +
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS suppliers (" +
                 "supplier_id serial PRIMARY KEY," +
                 "\"name\" varchar(10) NOT NULL," +
                 "description text);";
+        Statement statement = connection.createStatement();
+        statement.execute(SqlQuery);
+    }
+
+    private void createProductCategoriesTable() throws SQLException {
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS product_categories (" +
+                "product_category_id serial PRIMARY KEY," +
+                "\"name\" varchar(20) NOT NULL," +
+                "description text," +
+                "department varchar(20));";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
