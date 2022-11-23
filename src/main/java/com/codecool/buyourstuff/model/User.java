@@ -13,6 +13,13 @@ public class User extends BaseModel {
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
+    public User(UserDTO userDTO) {
+        this.name = userDTO.getName();
+        this.password = userDTO.getPassword();
+        this.id = userDTO.getId();
+        this.cartId = userDTO.getCartId();
+    }
+
     public String getName() {
         return name;
     }
