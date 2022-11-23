@@ -58,7 +58,13 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public void clear() {
-
+        String SqlQuery = "DELETE FROM cart;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
