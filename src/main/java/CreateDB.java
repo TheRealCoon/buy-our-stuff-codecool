@@ -30,6 +30,7 @@ public class CreateDB {
             createDB.createProductCategoriesTable();
             createDB.createLineItemsTable();
             createDB.createCartTable();
+            createDB.createUsersTable();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +85,7 @@ public class CreateDB {
         statement.execute(SqlQuery);
     }
 
-    private void createCartTable() throws SQLException{
+    private void createCartTable() throws SQLException {
         String SqlQuery = "CREATE TABLE IF NOT EXISTS cart (" +
                 "cart_id serial PRIMARY KEY," +
                 "currency varchar(4) DEFAULT 'USD'::character NOT NULL);";
@@ -92,7 +93,14 @@ public class CreateDB {
         statement.execute(SqlQuery);
     }
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
+    private void createUsersTable() throws SQLException {
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS users (" +
+                "user_id serial PRIMARY KEY," +
+                "\"name\" varchar(20) NOT NULL," +
+                "\"password\" varchar(40) NOT NULL," +
+                "cart_id int NOT NULL);";
+        Statement statement = connection.createStatement();
+        statement.execute(SqlQuery);
     }
+
 }
