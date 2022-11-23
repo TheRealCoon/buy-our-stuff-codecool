@@ -33,11 +33,11 @@ public class CartDaoDb implements CartDao {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ps.setInt(1, id);
-             String currency = ps.executeQuery().getString(1);
-            if (currency!=null && !currency.isEmpty()){
+            String currency = ps.executeQuery().getString(1);
+            if (currency != null && !currency.isEmpty()) {
                 cart = new Cart(currency);
                 cart.setId(id);
-            }else throw new DataNotFoundException("No such cart");
+            } else throw new DataNotFoundException("No such cart");
         } catch (SQLException e) {
             e.printStackTrace();
         }
