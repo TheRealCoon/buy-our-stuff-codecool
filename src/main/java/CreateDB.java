@@ -1,5 +1,7 @@
+import com.codecool.buyourstuff.model.Product;
 import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.Supplier;
+import com.codecool.buyourstuff.model.User;
 import com.codecool.buyourstuff.util.BaseData;
 
 import java.sql.*;
@@ -39,10 +41,8 @@ public class CreateDB {
             createDB.createLineItemsTable();
             createDB.addDataToSuppliersTable();
             createDB.addDataToProductCategoriesTable();
-            createDB.addDataToCartsTable();
             createDB.addDataToProductsTable();
             createDB.addDataToUsersTable();
-            createDB.addDataToLineItemsTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,7 +140,7 @@ public class CreateDB {
         for (Supplier supplier: BaseData.defaultSuppliers()) {
             ps = connection.prepareStatement(SqlQuery);
             ps.setString(1, supplier.getName());
-            ps.setString(1, supplier.getDescription());
+            ps.setString(2, supplier.getDescription());
             ps.execute();
         }
     }
@@ -150,19 +150,35 @@ public class CreateDB {
         for (ProductCategory pc: BaseData.defaultProductCategories()) {
             ps = connection.prepareStatement(SqlQuery);
             ps.setString(1, pc.getName());
-            ps.setString(1, pc.getDescription());
-            ps.setString(1, pc.getDepartment());
+            ps.setString(2, pc.getDescription());
+            ps.setString(3, pc.getDepartment());
             ps.execute();
         }
+    }
+    private void addDataToProductsTable() throws SQLException {
+        String SqlQuery = "INSERT INTO product_categories(name, price, currency, description, product_category_id, supplier_id) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps;
+        for (Product product: BaseData.defaultProducts()) {
+            ps = connection.prepareStatement(SqlQuery);
+            ps.setString(1, product.getName());
+            ps.setString(2, product.getPrice());
+            ps.setString(3, product.getDefaultCurrency().toString());
+            ps.setString(4, product.getDescription());
+            ps.setInt(5, product.getSupplier().getId());
+            ps.setInt(6, product.getProductCategory().getId());
+            ps.execute();
+        }
+    }
+    private void addDataToUsersTable() throws SQLException{
+        String SqlQuery = "INSERT INTO product_categories(name, password, cart_id) VALUES (?, ?, ?)";
+        PreparedStatement ps;
+        for (User user: BaseData.defaultUsers()) {
+            ps = connection.prepareStatement(SqlQuery);
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPassword());
+            ps.setInt(3, user.getCartId());
+            ps.execute();
+        }
+    }
 
-    }
-    private void addDataToCartsTable() {
-
-    }
-    private void addDataToProductsTable() {
-    }
-    private void addDataToUsersTable() {
-    }
-    private void addDataToLineItemsTable() {
-    }
 }
