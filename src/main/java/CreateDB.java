@@ -25,12 +25,13 @@ public class CreateDB {
         }
         try (Connection con = DriverManager.getConnection(LOCALHOST_5432 + DB_NAME, USER, PASSWORD)) {
             CreateDB createDB = new CreateDB(con);
-            createDB.createProductsTable();
+            //ATTENTION: order is extremely important here because of Foreign keys
             createDB.createSuppliersTable();
             createDB.createProductCategoriesTable();
-            createDB.createLineItemsTable();
-            createDB.createCartTable();
+            createDB.createCartsTable();
+            createDB.createProductsTable();
             createDB.createUsersTable();
+            createDB.createLineItemsTable();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,19 +40,6 @@ public class CreateDB {
 
     private void createDataBase() throws SQLException {
         String SqlQuery = "CREATE DATABASE " + DB_NAME + ";";
-        Statement statement = connection.createStatement();
-        statement.execute(SqlQuery);
-    }
-
-    private void createProductsTable() throws SQLException {
-        String SqlQuery = "CREATE TABLE IF NOT EXISTS products (" +
-                "product_id serial PRIMARY KEY," +
-                "\"name\" varchar(40) NOT NULL," +
-                "price integer NOT NULL," +
-                "currency varchar(4) NOT NULL," +
-                "description text," +
-                "product_category_id integer NULL," +
-                "supplier_id integer NULL);";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
@@ -75,32 +63,66 @@ public class CreateDB {
         statement.execute(SqlQuery);
     }
 
-    private void createLineItemsTable() throws SQLException {
-        String SqlQuery = "CREATE TABLE IF NOT EXISTS line_items (" +
-                "line_items_id serial PRIMARY KEY," +
-                "product_id int NOT NULL," +
-                "cart_id int NOT NULL," +
-                "quantity int NOT NULL DEFAULT 1);";
+    private void createCartsTable() throws SQLException {
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS carts (" +
+                "cart_id serial PRIMARY KEY," +
+                "currency varchar(4) DEFAULT 'USD' NOT NULL);";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
 
-    private void createCartTable() throws SQLException {
-        String SqlQuery = "CREATE TABLE IF NOT EXISTS cart (" +
-                "cart_id serial PRIMARY KEY," +
-                "currency varchar(4) DEFAULT 'USD'::character NOT NULL);";
+    private void createProductsTable() throws SQLException {
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS products (" +
+                "product_id serial PRIMARY KEY, " +
+                "\"name\" varchar(40) NOT NULL, " +
+                "price decimal(5,2) NOT NULL, " +
+                "currency varchar(4) NOT NULL, " +
+                "description text, " +
+                "product_category_id int, " +
+                "supplier_id int, " +
+                "CONSTRAINT fk_product_categories " +
+                "FOREIGN KEY (product_category_id) REFERENCES product_categories(product_category_id) " +
+                "ON UPDATE CASCADE " +
+                "ON DELETE SET NULL, " +
+                "CONSTRAINT fk_suppliers " +
+                "FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id) " +
+                "ON UPDATE CASCADE " +
+                "ON DELETE SET NULL);";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
 
     private void createUsersTable() throws SQLException {
         String SqlQuery = "CREATE TABLE IF NOT EXISTS users (" +
-                "user_id serial PRIMARY KEY," +
-                "\"name\" varchar(20) NOT NULL," +
+                "user_id serial PRIMARY KEY, " +
+                "\"name\" varchar(20) NOT NULL, " +
                 "\"password\" varchar(40) NOT NULL," +
-                "cart_id int NOT NULL);";
+                "cart_id int, " +
+                "CONSTRAINT fk_cart " +
+                "FOREIGN KEY (cart_id) REFERENCES carts(cart_id) " +
+                "ON UPDATE CASCADE " +
+                "ON DELETE SET NULL);";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
+
+    private void createLineItemsTable() throws SQLException {
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS line_items (" +
+                "line_items_id serial PRIMARY KEY, " +
+                "product_id int, " +
+                "cart_id int, " +
+                "quantity int NOT NULL DEFAULT 1, " +
+                "CONSTRAINT fk_product " +
+                "FOREIGN KEY (product_id) REFERENCES products(product_id) " +
+                "ON UPDATE CASCADE " +
+                "ON DELETE CASCADE, " +
+                "CONSTRAINT fk_cart " +
+                "FOREIGN KEY (cart_id) REFERENCES carts(cart_id) " +
+                "ON UPDATE CASCADE " +
+                "ON DELETE CASCADE);";
+        Statement statement = connection.createStatement();
+        statement.execute(SqlQuery);
+    }
+
 
 }
