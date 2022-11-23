@@ -41,7 +41,7 @@ public class UserDaoFile implements UserDao {
             cartDao.add(cart);
 
             user.setCartId(cart.getId());
-            user.setId(0);
+            user.setId(nextUserId++);
 
             try (FileWriter fileWriter = new FileWriter(USER_FILE, true)) {
                 fileWriter.append(user.toString());
