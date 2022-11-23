@@ -20,7 +20,7 @@ public class CreateDB {
             CreateDB createDB = new CreateDB(con);
             createDB.createDataBase();
             System.out.println("Database created");
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         try (Connection con = DriverManager.getConnection(LOCALHOST_5432 + DB_NAME, USER, PASSWORD)) {
@@ -28,6 +28,8 @@ public class CreateDB {
             createDB.createProductsTable();
             createDB.createSuppliersTable();
             createDB.createProductCategoriesTable();
+            createDB.createLineItemsTable();
+            createDB.createCartTable();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,20 +37,20 @@ public class CreateDB {
     }
 
     private void createDataBase() throws SQLException {
-        String SqlQuery = "CREATE DATABASE " + DB_NAME +";";
+        String SqlQuery = "CREATE DATABASE " + DB_NAME + ";";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
 
     private void createProductsTable() throws SQLException {
         String SqlQuery = "CREATE TABLE IF NOT EXISTS products (" +
-                            "product_id serial PRIMARY KEY," +
-                            "\"name\" varchar(40) NOT NULL," +
-                            "price integer NOT NULL," +
-                            "currency varchar(4) NOT NULL," +
-                            "description text," +
-                            "product_category_id integer NULL," +
-                            "supplier_id integer NULL);";
+                "product_id serial PRIMARY KEY," +
+                "\"name\" varchar(40) NOT NULL," +
+                "price integer NOT NULL," +
+                "currency varchar(4) NOT NULL," +
+                "description text," +
+                "product_category_id integer NULL," +
+                "supplier_id integer NULL);";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
@@ -68,6 +70,24 @@ public class CreateDB {
                 "\"name\" varchar(20) NOT NULL," +
                 "description text," +
                 "department varchar(20));";
+        Statement statement = connection.createStatement();
+        statement.execute(SqlQuery);
+    }
+
+    private void createLineItemsTable() throws SQLException {
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS line_items (" +
+                "line_items_id serial PRIMARY KEY," +
+                "product_id int NOT NULL," +
+                "cart_id int NOT NULL," +
+                "quantity int NOT NULL DEFAULT 1);";
+        Statement statement = connection.createStatement();
+        statement.execute(SqlQuery);
+    }
+
+    private void createCartTable() throws SQLException{
+        String SqlQuery = "CREATE TABLE IF NOT EXISTS cart (" +
+                "cart_id serial PRIMARY KEY," +
+                "currency varchar(4) DEFAULT 'USD'::character NOT NULL);";
         Statement statement = connection.createStatement();
         statement.execute(SqlQuery);
     }
