@@ -1,4 +1,8 @@
+import com.codecool.buyourstuff.model.Supplier;
+import com.codecool.buyourstuff.util.BaseData;
+
 import java.sql.*;
+import java.util.List;
 
 public class CreateDB {
     //TODO you need to set 'USER' and 'PASSWORD' in environment variables
@@ -32,7 +36,12 @@ public class CreateDB {
             createDB.createProductsTable();
             createDB.createUsersTable();
             createDB.createLineItemsTable();
-
+            createDB.addDataToSuppliersTable();
+            createDB.addDataToProductCategoriesTable();
+            createDB.addDataToCartsTable();
+            createDB.addDataToProductsTable();
+            createDB.addDataToUsersTable();
+            createDB.addDataToLineItemsTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,5 +133,25 @@ public class CreateDB {
         statement.execute(SqlQuery);
     }
 
+    private void addDataToSuppliersTable() throws SQLException {
+        String SqlQuery = "INSERT INTO suppliers(name, description) VALUES (?, ?)";
+        PreparedStatement ps;
+        for (Supplier supplier: BaseData.defaultSuppliers()) {
+            ps = connection.prepareStatement(SqlQuery);
+            ps.setString(1, supplier.getName());
+            ps.setString(1, supplier.getDescription());
+        }
+    }
+    private void addDataToProductCategoriesTable() {
 
+    }
+    private void addDataToCartsTable() {
+
+    }
+    private void addDataToProductsTable() {
+    }
+    private void addDataToUsersTable() {
+    }
+    private void addDataToLineItemsTable() {
+    }
 }
