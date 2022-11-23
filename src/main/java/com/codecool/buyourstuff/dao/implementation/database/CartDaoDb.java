@@ -4,16 +4,23 @@ import com.codecool.buyourstuff.dao.CartDao;
 import com.codecool.buyourstuff.model.Cart;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CartDaoDb implements CartDao {
-    private final Connection connection;
-    public CartDaoDb(Connection connection){
-        this.connection = connection;
-    }
+
     @Override
     public void add(Cart cart) {
-
+        String SqlQuery = "INSERT INTO cart(currency) VALUES(?);";
+        try (Connection connection = DriverManager.getConnection(LOCALHOST_5432 + DEFAULT_DBNAME, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.setString(1, cart.getCurrency().toString());
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
