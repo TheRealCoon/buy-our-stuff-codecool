@@ -29,6 +29,8 @@ public class CreateDB {
             System.out.println("Database created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            System.out.println("Quitting...");
+            return;
         }
         try (Connection con = DriverManager.getConnection(LOCALHOST_5432 + DB_NAME, USER, PASSWORD)) {
             CreateDB createDB = new CreateDB(con);
