@@ -4,10 +4,8 @@ import com.codecool.buyourstuff.dao.CartDao;
 import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.codecool.buyourstuff.dao.implementation.database.DbLogin.*;
@@ -16,7 +14,7 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public void add(Cart cart) {
-        String SqlQuery = "INSERT INTO cart(currency) VALUES(?);";
+        String SqlQuery = "INSERT INTO carts(currency) VALUES(?);";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ps.setString(1, cart.getCurrency().toString());
@@ -28,7 +26,7 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public Cart find(int id) {
-        String SqlQuery = "SELECT currency FROM cart WHERE id = ?;";
+        String SqlQuery = "SELECT currency FROM carts WHERE id = ?;";
         Cart cart = null;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
@@ -46,7 +44,7 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public void remove(int id) {
-        String SqlQuery = "DELETE FROM cart WHERE id = ?;";
+        String SqlQuery = "DELETE FROM carts WHERE id = ?;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ps.setInt(1, id);
@@ -58,7 +56,7 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public void clear() {
-        String SqlQuery = "DELETE FROM cart;";
+        String SqlQuery = "DELETE FROM carts;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ps.execute();
@@ -69,6 +67,19 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public List<Cart> getAll() {
-        return null;
+        List<Cart> allCarts = new ArrayList<>();
+        String SqlQuery = "SELECT * FROM carts;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Cart cart = new Cart(rs.getString(2));
+                cart.setId(rs.getInt(1));
+                allCarts.add(cart);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allCarts;
     }
 }
