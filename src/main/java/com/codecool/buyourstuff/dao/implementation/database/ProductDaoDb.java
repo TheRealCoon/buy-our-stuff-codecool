@@ -98,10 +98,10 @@ public class ProductDaoDb implements ProductDao {
         List<Product> allProducts = new ArrayList<>();
         String SqlQuery = "SELECT p.product_id, p.\"name\", p.price, p.currency, p.description, " +
                 "pc.product_category_id, pc.\"name\", pc.description, pc.department, " +
-                "s.\"name\", s.description " +
+                "s.supplier_id, s.\"name\", s.description " +
                 "FROM products as p " +
                 "JOIN product_categories as pc ON pc.product_category_id = p.product_category_id " +
-                "JOIN suppliers as s ON s.supplier_id = p.supplier_id ";
+                "JOIN suppliers as s ON s.supplier_id = p.supplier_id;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ResultSet rs = ps.executeQuery();
@@ -126,7 +126,36 @@ public class ProductDaoDb implements ProductDao {
 
     @Override
     public List<Product> getBy(Supplier supplier) {
-        return null;
+        List<Product> products = new ArrayList<>();
+        String SqlQuery = "SELECT p.product_id, p.\"name\", p.price, p.currency, p.description, " +
+                "pc.product_category_id, pc.\"name\", pc.description, pc.department, " +
+                "s.supplier_id, s.\"name\", s.description " +
+                "FROM products as p " +
+                "JOIN product_categories as pc ON pc.product_category_id = p.product_category_id " +
+                "JOIN suppliers as s ON s.supplier_id = p.supplier_id " +
+                "WHERE p.supplier_id = ? OR (s.\"name\" = ? AND s.description = ?);";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.setInt(1, supplier.getId());
+            ps.setString(2, supplier.getName());
+            ps.setString(3, supplier.getDescription());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString(2);
+                BigDecimal price = rs.getBigDecimal(3);
+                String currency = rs.getString(4);
+                String description = rs.getString(5);
+                ProductCategory pc = new ProductCategory(rs.getString(7), rs.getString(8), rs.getString(9));
+                pc.setId(rs.getInt(6));
+                supplier.setId(10);
+                Product product = new Product(name, price, currency, description, pc, supplier);
+                product.setId(rs.getInt(1));
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 
     @Override
