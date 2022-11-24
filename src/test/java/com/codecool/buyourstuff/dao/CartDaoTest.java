@@ -1,5 +1,6 @@
 package com.codecool.buyourstuff.dao;
 
+import com.codecool.buyourstuff.dao.implementation.database.CartDaoDb;
 import com.codecool.buyourstuff.dao.implementation.file.CartDaoFile;
 import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
@@ -8,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CartDaoTest {
-//    private static final CartDao CART_DAO = DataManager.getCartDao();
-    private static final CartDao CART_DAO = new CartDaoFile();
+    private static final CartDao CART_DAO = DataManager.getCartDao();
 
     @Test
     void testAdd() {

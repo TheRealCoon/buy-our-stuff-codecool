@@ -16,9 +16,12 @@ public class CartDaoDb implements CartDao {
     public void add(Cart cart) {
         String SqlQuery = "INSERT INTO carts(currency) VALUES(?);";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            PreparedStatement ps = connection.prepareStatement(SqlQuery, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, cart.getCurrency().toString());
-            ps.execute();
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            cart.setId(rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -26,13 +29,14 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public Cart find(int id) {
-        String SqlQuery = "SELECT currency FROM carts WHERE id = ?;";
+        String SqlQuery = "SELECT currency FROM carts WHERE cart_id = ?;";
         Cart cart = null;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ps.setInt(1, id);
-            String currency = ps.executeQuery().getString(1);
-            if (currency != null && !currency.isEmpty()) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String currency = rs.getString(1);
                 cart = new Cart(currency);
                 cart.setId(id);
             } else throw new DataNotFoundException("No such cart");
@@ -44,11 +48,11 @@ public class CartDaoDb implements CartDao {
 
     @Override
     public void remove(int id) {
-        String SqlQuery = "DELETE FROM carts WHERE id = ?;";
+        String SqlQuery = "DELETE FROM carts WHERE cart_id = ?;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ps.setInt(1, id);
-            if (!ps.execute()) throw new DataNotFoundException("No such cart");
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,7 +76,7 @@ public class CartDaoDb implements CartDao {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Cart cart = new Cart(rs.getString(2));
                 cart.setId(rs.getInt(1));
                 allCarts.add(cart);
