@@ -1,8 +1,6 @@
 package com.codecool.buyourstuff.dao.implementation.database;
 
-import com.codecool.buyourstuff.dao.DaoImplementationSupplier;
 import com.codecool.buyourstuff.dao.ProductDao;
-import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.Product;
 import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.Supplier;
@@ -11,7 +9,6 @@ import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 import static com.codecool.buyourstuff.dao.implementation.database.DbLogin.*;
@@ -26,7 +23,6 @@ public class ProductDaoDb implements ProductDao {
             ps.setBigDecimal(2, product.getDefaultPrice());
             ps.setString(3, product.getDefaultCurrency().toString());
             ps.setString(4, product.getProductCategory().getDescription());
-            ;
             ps.setInt(5, product.getProductCategory().getId());
             ps.setInt(6, product.getSupplier().getId());
             ps.executeUpdate();
@@ -42,7 +38,7 @@ public class ProductDaoDb implements ProductDao {
     public Product find(int id) {
         String SqlQuery = "SELECT p.\"name\", p.price, p.currency, p.description, " +
                 "pc.product_category_id, pc.\"name\", pc.description, pc.department, " +
-                "s.\"name\", s.description " +
+                "s.supplier_id, s.\"name\", s.description " +
                 "FROM products as p " +
                 "JOIN product_categories as pc ON pc.product_category_id = p.product_category_id " +
                 "JOIN suppliers as s ON s.supplier_id = p.supplier_id " +
