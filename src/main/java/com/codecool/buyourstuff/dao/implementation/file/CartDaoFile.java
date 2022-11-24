@@ -7,7 +7,6 @@ import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class CartDaoFile implements CartDao {
     private static final String CART_FILE = "data/cart.csv";
@@ -42,7 +41,7 @@ public class CartDaoFile implements CartDao {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            System.out.println("Invalid ID in file in line: " + lineCounter);
+            System.out.println("Invalid ID in file at line: " + lineCounter);
         }
         if (cart == null) {
             throw new DataNotFoundException("Cart with id = " + id + "not found!");
@@ -53,7 +52,9 @@ public class CartDaoFile implements CartDao {
     @Override
     public void remove(int id) {
         Cart cart = find(id);
-
+        List<Cart> carts = getAll();
+        carts.remove(cart);
+        writeListOfCartsInFile(carts);
     }
 
     @Override
@@ -64,22 +65,36 @@ public class CartDaoFile implements CartDao {
     @Override
     public List<Cart> getAll() {
         List<Cart> carts = new ArrayList<>();
+        String line;
+        int lineCounter = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(CART_FILE))) {
-            while ((line = reader.readLine()) != null && cart == null) {
+            while ((line = reader.readLine()) != null) {
+                lineCounter++;
                 String[] values = line.split(DATA_SEPARATOR);
                 int resultId = Integer.parseInt(values[0]);
                 String resultCurrency = values[1];
-                if (resultId == id) {
-                    cart = new Cart(resultCurrency);
-                    cart.setId(resultId);
-                }
+                Cart cart = new Cart(resultCurrency);
+                cart.setId(resultId);
+                carts.add(cart);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID in file!");
+        } catch (
+                NumberFormatException e) {
+            System.out.println("Invalid ID in file at line: " + lineCounter);
         }
-        return null;
+        return carts;
+    }
+
+    private void writeListOfCartsInFile(List<Cart> carts){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, true))) {
+            for (Cart cart: carts) {
+                String line = cart.getId() + DATA_SEPARATOR + cart.getCurrency();
+                writer.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
