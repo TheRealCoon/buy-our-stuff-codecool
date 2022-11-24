@@ -31,32 +31,41 @@ public class DaoImplementationSupplier {
         printImplementation(daoType);
         switch (daoType) {
             case FILE:
-                return new DaoImplementationSupplier(
-                        new ProductDaoFile(),
-                        new ProductCategoryDaoFile(),
-                        new SupplierDaoFile(),
-                        new CartDaoFile(),
-                        new LineItemDaoFile(),
-                        new UserDaoFile()
-                );
+//                return new DaoImplementationSupplier(
+//                        new ProductDaoFile(),
+//                        new ProductCategoryDaoFile(),
+//                        new SupplierDaoFile(),
+//                        new CartDaoFile(),
+//                        new LineItemDaoFile(),
+//                        new UserDaoFile()
+//                );
             case DATABASE:
-                return new DaoImplementationSupplier(
-                        new ProductDaoDb(),
-                        new ProductCategoryDaoDb(),
-                        new SupplierDaoDb(),
-                        new CartDaoDb(),
-                        new LineItemDaoDb(),
-                        new UserDaoDb()
-                );
+//                return new DaoImplementationSupplier(
+//                        new ProductDaoDb(),
+//                        new ProductCategoryDaoDb(),
+//                        new SupplierDaoDb(),
+//                        new CartDaoDb(),
+//                        new LineItemDaoDb(),
+//                        new UserDaoDb()
+//                );
 
             case MEMORY:
                 return new DaoImplementationSupplier(
-                    new ProductDaoMem(),
-                    new ProductCategoryDaoMem(),
-                    new SupplierDaoMem(),
-                    new CartDaoMem(),
-                    new LineItemDaoMem(),
-                    new UserDaoMem()
+                        new ProductDaoMem(),
+                        new ProductCategoryDaoMem(),
+                        new SupplierDaoMem(),
+                        new CartDaoMem(),
+                        new LineItemDaoMem(),
+                        new UserDaoMem()
+                );
+            default:
+                return new DaoImplementationSupplier(
+                        new ProductDaoMem(),
+                        new ProductCategoryDaoMem(),
+                        new SupplierDaoMem(),
+                        new CartDaoMem(),
+                        new LineItemDaoMem(),
+                        new UserDaoMem()
                 );
         }
     }

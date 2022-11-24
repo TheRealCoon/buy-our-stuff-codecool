@@ -11,7 +11,7 @@ public class CartDaoTest {
 
     @Test
     void testAdd() {
-        Cart cart = new Cart("test");
+        Cart cart = new Cart("USD");
         CART_DAO.add(cart);
         assertNotEquals(0, cart.getId());
         CART_DAO.remove(cart.getId());
@@ -19,7 +19,7 @@ public class CartDaoTest {
 
     @Test
     void testFind_validId() {
-        Cart cart = new Cart("test");
+        Cart cart = new Cart("USD");
         CART_DAO.add(cart);
 
         Cart result = CART_DAO.find(cart.getId());
@@ -34,7 +34,7 @@ public class CartDaoTest {
 
     @Test
     void testRemove() {
-        Cart cart = new Cart("test");
+        Cart cart = new Cart("USD");
         CART_DAO.add(cart);
         assertNotNull(CART_DAO.find(cart.getId()));
 
