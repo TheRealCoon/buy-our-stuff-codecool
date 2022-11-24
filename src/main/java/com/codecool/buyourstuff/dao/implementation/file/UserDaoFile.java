@@ -23,17 +23,27 @@ public class UserDaoFile implements UserDao {
         if (USER_FILE.exists()) {
             try (Scanner scanner = new Scanner(USER_FILE)) {
                 scanner.useDelimiter(",");
+                int lastUserId = 0;
+
                 while (scanner.hasNextLine()) {
+                    lastUserId = scanner.nextInt();
                     scanner.nextLine();
                 }
-                scanner.findInLine("id=");
-                int lastUserId = scanner.nextInt();
+
                 nextUserId = lastUserId + 1;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        else nextUserId = 1;
+        else {
+            try {
+                USER_FILE.getParentFile().mkdir();
+                USER_FILE.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            nextUserId = 1;
+        }
     }
 
     @Override
