@@ -49,7 +49,14 @@ public class ProductCategoryDaoDb implements ProductCategoryDao {
 
     @Override
     public void remove(int id) {
-
+        String SqlQuery = "DELETE FROM product_categories WHERE id = ?;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.setInt(1, id);
+            if (!ps.execute()) throw new DataNotFoundException("No such cart");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
