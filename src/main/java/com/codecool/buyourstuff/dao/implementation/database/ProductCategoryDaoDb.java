@@ -61,7 +61,13 @@ public class ProductCategoryDaoDb implements ProductCategoryDao {
 
     @Override
     public void clear() {
-
+        String SqlQuery = "DELETE FROM product_categories;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
