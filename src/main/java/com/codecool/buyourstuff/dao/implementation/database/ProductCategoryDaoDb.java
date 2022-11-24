@@ -7,6 +7,7 @@ import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.codecool.buyourstuff.dao.implementation.database.DbLogin.*;
@@ -72,6 +73,22 @@ public class ProductCategoryDaoDb implements ProductCategoryDao {
 
     @Override
     public List<ProductCategory> getAll() {
-        return null;
+        List<ProductCategory> allProductCategory = new ArrayList<>();
+        String SqlQuery = "SELECT * FROM product_categories;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString(2;
+                String description = rs.getString(3);
+                String department = rs.getString(4);
+                ProductCategory pc = new ProductCategory(name, description, department);
+                pc.setId(rs.getInt(1));
+                allProductCategory.add(pc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allProductCategory;
     }
 }
