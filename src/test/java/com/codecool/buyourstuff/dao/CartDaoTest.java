@@ -1,7 +1,6 @@
 package com.codecool.buyourstuff.dao;
 
 import com.codecool.buyourstuff.model.Cart;
-import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import org.junit.jupiter.api.Test;
 
