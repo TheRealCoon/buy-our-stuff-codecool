@@ -83,7 +83,13 @@ public class ProductDaoDb implements ProductDao {
 
     @Override
     public void clear() {
-
+        String SqlQuery = "DELETE FROM products;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

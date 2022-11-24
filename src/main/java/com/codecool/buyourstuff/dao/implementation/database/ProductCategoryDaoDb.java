@@ -67,7 +67,7 @@ public class ProductCategoryDaoDb implements ProductCategoryDao {
         String SqlQuery = "DELETE FROM product_categories;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
-            ps.execute();
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
