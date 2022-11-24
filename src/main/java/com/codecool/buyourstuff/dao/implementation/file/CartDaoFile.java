@@ -27,8 +27,10 @@ public class CartDaoFile implements CartDao {
     public Cart find(int id) {
         Cart cart = null;
         String line;
+        int lineCounter = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(CART_FILE))) {
             while ((line = reader.readLine()) != null && cart == null) {
+                lineCounter++;
                 String[] values = line.split(DATA_SEPARATOR);
                 int resultId = Integer.parseInt(values[0]);
                 String resultCurrency = values[1];
@@ -40,7 +42,7 @@ public class CartDaoFile implements CartDao {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            System.out.println("Invalid ID in file!");
+            System.out.println("Invalid ID in file in line: " + lineCounter);
         }
         if (cart == null) {
             throw new DataNotFoundException("Cart with id = " + id + "not found!");
@@ -61,6 +63,23 @@ public class CartDaoFile implements CartDao {
 
     @Override
     public List<Cart> getAll() {
+        List<Cart> carts = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(CART_FILE))) {
+            while ((line = reader.readLine()) != null && cart == null) {
+                String[] values = line.split(DATA_SEPARATOR);
+                int resultId = Integer.parseInt(values[0]);
+                String resultCurrency = values[1];
+                if (resultId == id) {
+                    cart = new Cart(resultCurrency);
+                    cart.setId(resultId);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID in file!");
+        }
         return null;
     }
+
 }
