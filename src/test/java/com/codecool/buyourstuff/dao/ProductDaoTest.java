@@ -19,7 +19,7 @@ public class ProductDaoTest {
     @Test
     void testAdd() {
         Product product = new Product("Test", new BigDecimal(12),
-                "test", "test", testProductCategory, testSupplier);
+                "USD", "test", testProductCategory, testSupplier);
         PRODUCT_DAO.add(product);
         assertNotEquals(0, product.getId());
         PRODUCT_DAO.remove(product.getId());
@@ -28,7 +28,7 @@ public class ProductDaoTest {
     @Test
     void testFind_validId() {
         Product product = new Product("Test", new BigDecimal(12),
-                "test", "test", testProductCategory, testSupplier);
+                "USD", "test", testProductCategory, testSupplier);
         PRODUCT_DAO.add(product);
 
         Product result = PRODUCT_DAO.find(product.getId());
@@ -44,7 +44,7 @@ public class ProductDaoTest {
     @Test
     void testRemove() {
         Product product = new Product("Test", new BigDecimal(12),
-                "test", "test", testProductCategory, testSupplier);
+                "USD", "test", testProductCategory, testSupplier);
         PRODUCT_DAO.add(product);
         assertNotNull(PRODUCT_DAO.find(product.getId()));
 
