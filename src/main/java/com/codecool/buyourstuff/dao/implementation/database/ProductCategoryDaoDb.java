@@ -1,8 +1,6 @@
 package com.codecool.buyourstuff.dao.implementation.database;
 
-import com.codecool.buyourstuff.dao.CartDao;
 import com.codecool.buyourstuff.dao.ProductCategoryDao;
-import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 
@@ -79,7 +77,7 @@ public class ProductCategoryDaoDb implements ProductCategoryDao {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String name = rs.getString(2;
+                String name = rs.getString(2);
                 String description = rs.getString(3);
                 String department = rs.getString(4);
                 ProductCategory pc = new ProductCategory(name, description, department);
