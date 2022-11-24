@@ -22,7 +22,7 @@ public class UserDaoTest {
         User user = new User("test2", "test");
         USER_DAO.add(user);
 
-        User result = USER_DAO.find(user.getName(), user.getPassword());
+        User result = USER_DAO.find("test2", "test");
         assertEquals(user.getId(), result.getId());
     }
 
