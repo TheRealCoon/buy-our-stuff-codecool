@@ -23,17 +23,27 @@ public class UserDaoFile implements UserDao {
         if (USER_FILE.exists()) {
             try (Scanner scanner = new Scanner(USER_FILE)) {
                 scanner.useDelimiter(",");
+                int lastUserId = 0;
+
                 while (scanner.hasNextLine()) {
+                    lastUserId = scanner.nextInt();
                     scanner.nextLine();
                 }
-                scanner.findInLine("id=");
-                int lastUserId = scanner.nextInt();
+
                 nextUserId = lastUserId + 1;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        else nextUserId = 1;
+        else {
+            try {
+                USER_FILE.getParentFile().mkdir();
+                USER_FILE.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            nextUserId = 1;
+        }
     }
 
     @Override
@@ -55,6 +65,7 @@ public class UserDaoFile implements UserDao {
                         .append(user.getPassword())
                         .append(',')
                         .append(String.valueOf(user.getCartId()))
+                        .append(',')
                         .append('\n');
             } catch (IOException e) {
                 e.printStackTrace();
@@ -65,14 +76,16 @@ public class UserDaoFile implements UserDao {
     @Override
     public User find(String name, String password) {
         try (Scanner scanner = new Scanner(USER_FILE)) {
+            scanner.useDelimiter(",");
             while (scanner.hasNextLine()) {
                 UserDTO userDTO = new UserDTO(
-                        scanner.nextInt(),
+                        Integer.parseInt(scanner.next()),
                         scanner.next(),
                         scanner.next(),
-                        scanner.nextInt());
+                        Integer.parseInt(scanner.next()));
                 if (name.equals(userDTO.getName()) && BCrypt.checkpw(password, userDTO.getPassword()))
                     return new User(userDTO);
+                scanner.nextLine();
             }
             throw new DataNotFoundException("No such user. Name or password may be incorrect.");
         } catch (IOException e) {
@@ -96,7 +109,7 @@ public class UserDaoFile implements UserDao {
         try (Scanner scanner = new Scanner(USER_FILE)) {
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()) {
-                scanner.findInLine("name=");
+                scanner.next();
                 if (name.equals(scanner.next())) return false;
                 scanner.nextLine();
             }
