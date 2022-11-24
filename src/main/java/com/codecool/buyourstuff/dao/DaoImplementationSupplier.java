@@ -1,11 +1,7 @@
 package com.codecool.buyourstuff.dao;
 
-import com.codecool.buyourstuff.dao.implementation.database.CartDaoDb;
-import com.codecool.buyourstuff.dao.implementation.database.ProductCategoryDaoDb;
-import com.codecool.buyourstuff.dao.implementation.database.SupplierDaoDb;
-import com.codecool.buyourstuff.dao.implementation.database.UserDaoDb;
-import com.codecool.buyourstuff.dao.implementation.file.CartDaoFile;
-import com.codecool.buyourstuff.dao.implementation.file.UserDaoFile;
+import com.codecool.buyourstuff.dao.implementation.database.*;
+import com.codecool.buyourstuff.dao.implementation.file.*;
 import com.codecool.buyourstuff.dao.implementation.mem.*;
 
 public class DaoImplementationSupplier {
