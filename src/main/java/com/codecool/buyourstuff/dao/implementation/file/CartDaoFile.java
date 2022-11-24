@@ -54,7 +54,7 @@ public class CartDaoFile implements CartDao {
         Cart cart = find(id);
         List<Cart> carts = getAll();
         carts.remove(cart);
-        writeListOfCartsInFile(carts);
+        overWriteListOfCartsInFile(carts);
     }
 
     @Override
@@ -86,8 +86,8 @@ public class CartDaoFile implements CartDao {
         return carts;
     }
 
-    private void writeListOfCartsInFile(List<Cart> carts){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, true))) {
+    private void overWriteListOfCartsInFile(List<Cart> carts){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, false))) {
             for (Cart cart: carts) {
                 String line = cart.getId() + DATA_SEPARATOR + cart.getCurrency();
                 writer.append(line);
