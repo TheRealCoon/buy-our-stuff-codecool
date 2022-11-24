@@ -11,12 +11,20 @@ import java.util.List;
 public class CartDaoFile implements CartDao {
     private static final String CART_FILE = "data/cart.csv";
     private static final String DATA_SEPARATOR = ";";
+    private static int highestID;
 
     @Override
     public void add(Cart cart) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, true))) {
-            String line = cart.getId() + DATA_SEPARATOR + cart.getCurrency();
-            writer.append(line);
+            int id = cart.getId();
+            if (id == 0) {
+                id = ++highestID;
+                cart.setId(id);
+            } else if (id > highestID) {
+                highestID = id;
+            }
+            String line = id + DATA_SEPARATOR + cart.getCurrency();
+            writer.append(line).append(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,16 +52,15 @@ public class CartDaoFile implements CartDao {
             System.out.println("Invalid ID in file at line: " + lineCounter);
         }
         if (cart == null) {
-            throw new DataNotFoundException("Cart with id = " + id + "not found!");
+            throw new DataNotFoundException("Cart with id = " + id + " not found!");
         }
         return cart;
     }
 
     @Override
     public void remove(int id) {
-        Cart cart = find(id);
         List<Cart> carts = getAll();
-        carts.remove(cart);
+        carts.removeIf(c -> c.getId() == id);
         overWriteListOfCartsInFile(carts);
     }
 
@@ -94,7 +101,7 @@ public class CartDaoFile implements CartDao {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, false))) {
             for (Cart cart : carts) {
                 String line = cart.getId() + DATA_SEPARATOR + cart.getCurrency();
-                writer.append(line);
+                writer.append(line).append(System.lineSeparator());
             }
         } catch (IOException e) {
             e.printStackTrace();
