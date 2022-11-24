@@ -14,12 +14,13 @@ public class UserDaoTest {
     void testAdd() {
         User user = new User("test", "test");
         USER_DAO.add(user);
-        assertNotEquals(0, user.getId());
+        assertEquals(1, user.getId());
     }
 
     @Test
     void testFind_validId() {
         User user = new User("test2", "test");
+        user.setId(2);
         USER_DAO.add(user);
 
         User result = USER_DAO.find("test2", "test");
