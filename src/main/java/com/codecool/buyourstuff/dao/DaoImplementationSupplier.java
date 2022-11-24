@@ -1,5 +1,11 @@
 package com.codecool.buyourstuff.dao;
 
+import com.codecool.buyourstuff.dao.implementation.database.CartDaoDb;
+import com.codecool.buyourstuff.dao.implementation.database.ProductCategoryDaoDb;
+import com.codecool.buyourstuff.dao.implementation.database.SupplierDaoDb;
+import com.codecool.buyourstuff.dao.implementation.database.UserDaoDb;
+import com.codecool.buyourstuff.dao.implementation.file.CartDaoFile;
+import com.codecool.buyourstuff.dao.implementation.file.UserDaoFile;
 import com.codecool.buyourstuff.dao.implementation.mem.*;
 
 public class DaoImplementationSupplier {
@@ -28,10 +34,26 @@ public class DaoImplementationSupplier {
     public static DaoImplementationSupplier getInstance(DaoType daoType) {
         printImplementation(daoType);
         switch (daoType) {
-            case FILE: //TODO: return the DAO implementations that work with files
-            case DATABASE: //TODO: return the DAO implementations that work with Database
+            case FILE:
+                return new DaoImplementationSupplier(
+                        new ProductDaoFile(),
+                        new ProductCategoryDaoFile(),
+                        new SupplierDaoFile(),
+                        new CartDaoFile(),
+                        new LineItemDaoFile(),
+                        new UserDaoFile()
+                );
+            case DATABASE:
+                return new DaoImplementationSupplier(
+                        new ProductDaoDb(),
+                        new ProductCategoryDaoDb(),
+                        new SupplierDaoDb(),
+                        new CartDaoDb(),
+                        new LineItemDaoDb(),
+                        new UserDaoDb()
+                );
+
             case MEMORY:
-            default:
                 return new DaoImplementationSupplier(
                     new ProductDaoMem(),
                     new ProductCategoryDaoMem(),
