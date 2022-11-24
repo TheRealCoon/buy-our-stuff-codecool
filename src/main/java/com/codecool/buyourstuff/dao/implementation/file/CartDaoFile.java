@@ -16,7 +16,7 @@ public class CartDaoFile implements CartDao {
     @Override
     public void add(Cart cart) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, true))) {
-            String line = String.valueOf(cart.getId()) + DATA_SEPARATOR + cart.getCurrency();
+            String line = cart.getId() + DATA_SEPARATOR + cart.getCurrency();
             writer.append(line);
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +50,7 @@ public class CartDaoFile implements CartDao {
 
     @Override
     public void remove(int id) {
+        Cart cart = find(id);
 
     }
 
