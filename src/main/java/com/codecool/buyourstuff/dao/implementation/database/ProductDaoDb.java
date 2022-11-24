@@ -71,7 +71,14 @@ public class ProductDaoDb implements ProductDao {
 
     @Override
     public void remove(int id) {
-
+        String SqlQuery = "DELETE FROM products WHERE product_id = ?;";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
