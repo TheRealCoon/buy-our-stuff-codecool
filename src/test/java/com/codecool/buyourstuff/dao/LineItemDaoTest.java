@@ -16,7 +16,7 @@ public class LineItemDaoTest {
     private static Supplier testSupplier = new Supplier("test", "test");
     private static ProductCategory testProductCategory = new ProductCategory("test", "test", "test");
     private static Product testProduct = new Product("Test", new BigDecimal(12),
-            "test", "test", testProductCategory, testSupplier);
+            "USD", "test", testProductCategory, testSupplier);
 
     @Test
     void testAdd() {

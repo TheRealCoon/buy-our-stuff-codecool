@@ -15,6 +15,7 @@ public class LineItemDaoMem implements LineItemDao {
 
     @Override
     public void add(LineItem lineItem) {
+        lineItem.setId(data.size() + 1);
         data.add(lineItem);
     }
 
