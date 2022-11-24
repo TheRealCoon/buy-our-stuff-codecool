@@ -59,7 +59,11 @@ public class CartDaoFile implements CartDao {
 
     @Override
     public void clear() {
-
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, false))) {
+            writer.append("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -86,9 +90,9 @@ public class CartDaoFile implements CartDao {
         return carts;
     }
 
-    private void overWriteListOfCartsInFile(List<Cart> carts){
+    private void overWriteListOfCartsInFile(List<Cart> carts) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, false))) {
-            for (Cart cart: carts) {
+            for (Cart cart : carts) {
                 String line = cart.getId() + DATA_SEPARATOR + cart.getCurrency();
                 writer.append(line);
             }
