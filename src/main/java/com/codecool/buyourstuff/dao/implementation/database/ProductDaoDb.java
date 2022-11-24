@@ -160,6 +160,36 @@ public class ProductDaoDb implements ProductDao {
 
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
-        return null;
+        List<Product> products = new ArrayList<>();
+        String SqlQuery = "SELECT p.product_id, p.\"name\", p.price, p.currency, p.description, " +
+                "pc.product_category_id, pc.\"name\", pc.description, pc.department, " +
+                "s.supplier_id, s.\"name\", s.description " +
+                "FROM products as p " +
+                "JOIN product_categories as pc ON pc.product_category_id = p.product_category_id " +
+                "JOIN suppliers as s ON s.supplier_id = p.supplier_id " +
+                "WHERE pc.product_category_id = ? OR (pc.\"name\" = ? AND pc.description = ? AND pc.department = ?);";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement ps = connection.prepareStatement(SqlQuery);
+            ps.setInt(1, productCategory.getId());
+            ps.setString(2, productCategory.getName());
+            ps.setString(3, productCategory.getDescription());
+            ps.setString(4, productCategory.getDepartment());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString(2);
+                BigDecimal price = rs.getBigDecimal(3);
+                String currency = rs.getString(4);
+                String description = rs.getString(5);
+                productCategory.setId(rs.getInt(6));
+                Supplier supplier = new Supplier(rs.getString(11), rs.getString(12));
+                supplier.setId(10);
+                Product product = new Product(name, price, currency, description, productCategory, supplier);
+                product.setId(rs.getInt(1));
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 }
