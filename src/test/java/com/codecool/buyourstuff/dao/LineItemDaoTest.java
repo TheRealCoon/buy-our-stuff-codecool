@@ -14,22 +14,21 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LineItemDaoTest {
-    //    private static final LineItemDao LINE_ITEM_DAO = DataManager.getLineItemDao();
-//    private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
-//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
-//    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
-//    private static final CartDao CART_DAO = DataManager.getCartDao();
-
-    //    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoFile();
+    private static final LineItemDao LINE_ITEM_DAO = DataManager.getLineItemDao();
+    private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
+    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
+    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
+    private static final CartDao CART_DAO = DataManager.getCartDao();
+//    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoFile();
 //    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
 //    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
 //    private static final ProductDao PRODUCT_DAO = new ProductDaoFile();
 //    private static final CartDao CART_DAO = new CartDaoFile();
-    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoDb();
-    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
-    private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
-    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoDb();
-    private static final CartDao CART_DAO = new CartDaoDb();
+//    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoDb();
+//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
+//    private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
+//    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoDb();
+//    private static final CartDao CART_DAO = new CartDaoDb();
 
     private static Supplier testSupplier = new Supplier("test", "test");
     private static ProductCategory testProductCategory = new ProductCategory("test", "test", "test");

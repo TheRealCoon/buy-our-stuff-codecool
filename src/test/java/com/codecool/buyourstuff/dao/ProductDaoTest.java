@@ -5,6 +5,7 @@ import com.codecool.buyourstuff.dao.implementation.database.ProductDaoDb;
 import com.codecool.buyourstuff.dao.implementation.database.SupplierDaoDb;
 import com.codecool.buyourstuff.dao.implementation.file.ProductCategoryDaoFile;
 import com.codecool.buyourstuff.dao.implementation.file.ProductDaoFile;
+import com.codecool.buyourstuff.dao.implementation.file.SupplierDaoFile;
 import com.codecool.buyourstuff.dao.implementation.mem.SupplierDaoMem;
 import com.codecool.buyourstuff.model.Product;
 import com.codecool.buyourstuff.model.ProductCategory;
@@ -19,16 +20,16 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductDaoTest {
-//    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
-//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
+    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
+    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
     private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
 
 //    private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
 //    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
 //    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoDb();
 
-    private static final ProductDao PRODUCT_DAO = new ProductDaoFile();
-    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
+//    private static final ProductDao PRODUCT_DAO = new ProductDaoFile();
+//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
 //    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
 
     private static Supplier testSupplier = new Supplier("test", "test");
