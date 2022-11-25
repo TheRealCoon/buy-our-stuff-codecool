@@ -1,6 +1,7 @@
 package com.codecool.buyourstuff.dao.implementation.file;
 
 import com.codecool.buyourstuff.dao.ProductDao;
+import com.codecool.buyourstuff.dao.implementation.database.SupplierDaoDb;
 import com.codecool.buyourstuff.model.*;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 
@@ -56,7 +57,7 @@ public class ProductDaoFile implements ProductDao {
                 int resultId = Integer.parseInt(values[0]);
                 if (resultId == id) {
                     String name = values[1];
-                    BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
+                    BigDecimal defaultPrice = BigDecimal.valueOf(Double.parseDouble(values[2]));
                     String currencyString = values[3];
                     String description = values[4];
                     ProductCategory productCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
@@ -104,12 +105,11 @@ public class ProductDaoFile implements ProductDao {
                 String[] values = line.split(DATA_SEPARATOR);
                 int resultId = Integer.parseInt(values[0]);
                 String name = values[1];
-                BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
-                ;
+                BigDecimal defaultPrice = BigDecimal.valueOf(Double.parseDouble(values[2]));
                 String currencyString = values[3];
                 String description = values[4];
-                String productCategory = values[5];
-                String supplier = values[6];
+                ProductCategory productCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
+                Supplier supplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
                 Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
                 product.setId(resultId);
                 products.add(product);
