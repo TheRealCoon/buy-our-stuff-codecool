@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,6 +57,7 @@ public class LineItemDaoFile implements LineItemDao {
 
     @Override
     public void remove(LineItem lineItem) {
+
     }
 
     @Override
@@ -69,7 +71,21 @@ public class LineItemDaoFile implements LineItemDao {
 
     @Override
     public void update(LineItem lineItem, int quantity) {
-
+        try (Scanner scanner = new Scanner(LINE_ITEM_FILE)) {
+            scanner.useDelimiter(DATA_SEPARATOR);
+            while (scanner.hasNextLine()) {
+                LineItem lineItem1 = new LineItem(
+                        new ProductDaoFile().find(scanner.nextInt()),
+                        scanner.nextInt(),
+                        scanner.nextInt());
+                if (lineItem.getId() == lineItem1.getId()){
+                    lineItem1.setQuantity(quantity);
+                }
+            }
+            throw new DataNotFoundException("No such line item.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -93,6 +109,21 @@ public class LineItemDaoFile implements LineItemDao {
 
     @Override
     public List<LineItem> getBy(Cart cart) {
-        return null;
+        List<LineItem> result = new ArrayList<>();
+        try (Scanner scanner = new Scanner(LINE_ITEM_FILE)) {
+            scanner.useDelimiter(DATA_SEPARATOR);
+            while (scanner.hasNextLine()) {
+                LineItem lineItem = new LineItem(
+                        new ProductDaoFile().find(scanner.nextInt()),
+                        scanner.nextInt(),
+                        scanner.nextInt());
+                if (cart.getId() == lineItem.getCartId())
+                    result.add(lineItem);
+            }
+            throw new DataNotFoundException("No such line item.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
