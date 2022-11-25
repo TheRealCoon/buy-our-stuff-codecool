@@ -1,5 +1,6 @@
 package com.codecool.buyourstuff.dao;
 
+import com.codecool.buyourstuff.dao.implementation.file.UserDaoFile;
 import com.codecool.buyourstuff.model.*;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import org.junit.jupiter.api.Test;

@@ -31,14 +31,14 @@ public class DaoImplementationSupplier {
         printImplementation(daoType);
         switch (daoType) {
             case FILE:
-//                return new DaoImplementationSupplier(
-//                        new ProductDaoFile(),
-//                        new ProductCategoryDaoFile(),
-//                        new SupplierDaoFile(),
-//                        new CartDaoFile(),
-//                        new LineItemDaoFile(),
-//                        new UserDaoFile()
-//                );
+                return new DaoImplementationSupplier(
+                        new ProductDaoFile(),
+                        new ProductCategoryDaoFile(),
+                        new SupplierDaoFile(),
+                        new CartDaoFile(),
+                        new LineItemDaoFile(),
+                        new UserDaoFile()
+                );
             case DATABASE:
                 return new DaoImplementationSupplier(
                         new ProductDaoDb(),
