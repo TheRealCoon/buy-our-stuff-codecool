@@ -8,14 +8,34 @@ import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class ProductCategoryDaoFile implements ProductCategoryDao {
 
     private static final File PRODUCT_CATEGORY_FILE = new File("data/productCategory.csv");
     private static final String DATA_SEPARATOR = ";";
-    private int highestId;
+    private static int highestId;
 
+    public ProductCategoryDaoFile() {
+        highestId = findHighestId();
+    }
+    private static int findHighestId() {
+        int result;
+        try (Scanner scanner = new Scanner(PRODUCT_CATEGORY_FILE)) {
+            scanner.useDelimiter(DATA_SEPARATOR);
+            int lastUserId = 0;
+
+            while (scanner.hasNextLine()) {
+                lastUserId = scanner.nextInt();
+                scanner.nextLine();
+            }
+            result = lastUserId;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 
     @Override
     public void add(ProductCategory category) {
