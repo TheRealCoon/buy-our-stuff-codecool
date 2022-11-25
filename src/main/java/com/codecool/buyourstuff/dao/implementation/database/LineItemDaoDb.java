@@ -123,6 +123,7 @@ public class LineItemDaoDb implements LineItemDao {
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, cart.getId());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int productId = rs.getInt(1);
