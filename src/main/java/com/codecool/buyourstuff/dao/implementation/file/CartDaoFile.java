@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartDaoFile implements CartDao {
-    private static final String CART_FILE = "data/cart.csv";
+    private static final File CART_FILE = new File("data/cart.csv");
     private static final String DATA_SEPARATOR = ";";
     private static int highestId;
 
