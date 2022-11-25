@@ -64,10 +64,10 @@ public class LineItemDaoDb implements LineItemDao {
 
     @Override
     public void update(LineItem lineItem, int quantity) {
-        int productId = lineItem.getProduct().getId();
-        String sql = "UPDATE line_item SET quantity = " + quantity + " WHERE line_items_id = " + productId;
+        String sql = "UPDATE line_item SET quantity = ? WHERE line_items_id = ?;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(quantity, lineItem.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
