@@ -81,7 +81,7 @@ public class ProductDaoFile implements ProductDao {
     public void remove(int id) {
         List<Product> product = getAll();
         product.removeIf(p -> p.getId() == id);
-        overWriteListOfCartsInFile(product);
+        overWriteListOfProductsInFile(product);
     }
 
     @Override
@@ -188,7 +188,7 @@ public class ProductDaoFile implements ProductDao {
         return products;
     }
 
-    private void overWriteListOfCartsInFile(List<Product> products) {
+    private void overWriteListOfProductsInFile(List<Product> products) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCTS_FILE, false))) {
             for (Product product : products) {
                 String line = product.getId() + DATA_SEPARATOR + product.getName()
