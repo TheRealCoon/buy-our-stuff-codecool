@@ -1,15 +1,10 @@
 package com.codecool.buyourstuff.dao;
 
-import com.codecool.buyourstuff.dao.implementation.database.*;
-import com.codecool.buyourstuff.dao.implementation.file.CartDaoFile;
-import com.codecool.buyourstuff.dao.implementation.file.UserDaoFile;
 import com.codecool.buyourstuff.model.*;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +21,8 @@ public class UserDaoTest {
     }
 
     @Test
-    void testFind_validId() {
+    void testFind_validUserNamePassword() {
+        //change the name at every use, else the crypted user+pw combo will be the same
         User user = new User("test2", "test");
         USER_DAO.add(user);
 

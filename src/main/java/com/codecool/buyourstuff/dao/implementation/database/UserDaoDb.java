@@ -6,6 +6,8 @@ import com.codecool.buyourstuff.dao.UserDao;
 import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.User;
 import com.codecool.buyourstuff.model.UserDTO;
+import com.codecool.buyourstuff.model.exception.DataNotFoundException;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
@@ -16,20 +18,17 @@ public class UserDaoDb implements UserDao {
         CartDao cartDao = DataManager.getCartDao();
         Cart cart = new Cart();
         cartDao.add(cart);
-
         user.setCartId(cart.getId());
-
-        final String SQL = "INSERT INTO users (name, password, cart_id) VALUES(?, ?, ?);";
-
-        try(Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
-            PreparedStatement st = con.prepareStatement(SQL);
-
+        final String SQL = "INSERT INTO users (\"name\", password, cart_id) VALUES(?, ?, ?);";
+        try (Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
+            PreparedStatement st = con.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, user.getName());
             st.setString(2, user.getPassword());
             st.setInt(3, user.getCartId());
-
             st.executeUpdate();
-
+            ResultSet rs = st.getGeneratedKeys();
+            rs.next();
+            user.setId(rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,34 +36,32 @@ public class UserDaoDb implements UserDao {
 
     @Override
     public User find(String userName, String password) {
-        final String SQL = "SELECT user_id, name, password, cart_id FROM users WHERE name = ? AND password = ?;";
-
-        try(Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
+        final String SQL = "SELECT user_id, \"name\", password, cart_id FROM users WHERE name = ?;";
+        try (Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
             PreparedStatement st = con.prepareStatement(SQL);
-
             st.setString(1, userName);
-            st.setString(2, password);
-
             ResultSet rs = st.executeQuery();
-
-            if (rs.next()) {
+            while (rs.next()) {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
                 String pw = rs.getString(3);
                 int cart_id = rs.getInt(4);
-                UserDTO userDTO = new UserDTO(id, name, pw, cart_id);
-                return new User(userDTO);
+                if(BCrypt.checkpw(password, pw)) {
+                    UserDTO userDTO = new UserDTO(id, name, pw, cart_id);
+                    return new User(userDTO);
+                }
             }
-        } catch (SQLException e) {
+        } catch (
+                SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new DataNotFoundException("Username or password doesn't match!");
     }
 
     @Override
     public void clear() {
         final String SQL = "TRUNCATE users;";
-        try(Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
+        try (Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
             PreparedStatement st = con.prepareStatement(SQL);
             st.executeUpdate();
         } catch (SQLException e) {
@@ -75,7 +72,7 @@ public class UserDaoDb implements UserDao {
     @Override
     public boolean isNameAvailable(String username) {
         final String SQL = "SELECT name FROM users WHERE name = ?;";
-        try(Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
+        try (Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
             PreparedStatement st = con.prepareStatement(SQL);
             ResultSet rs = st.executeQuery();
             return !rs.next();
