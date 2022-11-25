@@ -1,7 +1,6 @@
 package com.codecool.buyourstuff.dao.implementation.database;
 
 import com.codecool.buyourstuff.dao.ProductCategoryDao;
-import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 
