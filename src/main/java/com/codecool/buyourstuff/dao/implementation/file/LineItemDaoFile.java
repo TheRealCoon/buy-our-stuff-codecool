@@ -65,7 +65,6 @@ public class LineItemDaoFile implements LineItemDao {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        nextLineItemId = 1;
     }
 
     @Override
@@ -76,15 +75,16 @@ public class LineItemDaoFile implements LineItemDao {
     @Override
     public LineItem find(int id) {
         try (Scanner scanner = new Scanner(LINE_ITEM_FILE)) {
+            scanner.useDelimiter(DATA_SEPARATOR);
             while (scanner.hasNextLine()) {
                 LineItem lineItem = new LineItem(
-                        String.valueOf(scanner.nextInt()),
+                        new ProductDaoFile().find(scanner.nextInt()),
                         scanner.nextInt(),
                         scanner.nextInt());
                 if (id == lineItem.getId())
                     return lineItem;
             }
-            throw new DataNotFoundException("No such user. Name or password may be incorrect.");
+            throw new DataNotFoundException("No such line item.");
         } catch (IOException e) {
             e.printStackTrace();
         }
