@@ -2,6 +2,7 @@ package com.codecool.buyourstuff.dao.implementation.database;
 
 import com.codecool.buyourstuff.dao.SupplierDao;
 import com.codecool.buyourstuff.model.Supplier;
+import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class SupplierDaoDb implements SupplierDao {
                 Supplier supplier = new Supplier(name, description);
                 supplier.setId(id);
                 return supplier;
-            }
+            }else throw new DataNotFoundException("No such supplier");
 
         } catch (SQLException e) {
             e.printStackTrace();

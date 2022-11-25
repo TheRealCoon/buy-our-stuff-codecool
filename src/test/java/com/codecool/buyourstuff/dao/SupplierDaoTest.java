@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SupplierDaoTest {
-    //    private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
-    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
+        private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
+//    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
 
     @Test
     void testAdd() {
