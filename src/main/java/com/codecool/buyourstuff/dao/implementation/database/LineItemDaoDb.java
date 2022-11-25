@@ -81,30 +81,6 @@ public class LineItemDaoDb implements LineItemDao {
 
     @Override
     public List<LineItem> getBy(Cart cart) {
-        /*ProductDao productDataStore = DaoController.getProductDao();
-        int cartId = cart.getId();
-        String query = "SELECT * FROM line_item WHERE cart_id = " + cartId + " ORDER BY id;";
-        List<LineItem> result = new ArrayList<>();
-
-        try {
-            @Cleanup Connection conn = getConnection();
-            @Cleanup Statement stmt = conn.createStatement();
-            @Cleanup ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                int productId = rs.getInt("product_id");
-                int quantity = rs.getInt("quantity");
-                Product product = productDataStore.find(productId);
-                LineItem lineItem = new LineItem(product, cart.getId(), quantity);
-                lineItem.setId(id);
-                result.add(lineItem);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-*/
-        return null; //result
+        return null;
     }
 }
