@@ -13,7 +13,6 @@ import java.util.List;
 public class ProductCategoryDaoFile implements ProductCategoryDao {
 
     private final File PRODUCT_CATEGORY_FILE = new File("data/productCategory.csv");
-    private List<ProductCategory> productCategories = new ArrayList<>();
     private static final String DATA_SEPARATOR = ";";
     private int highestId;
 
@@ -72,7 +71,7 @@ public class ProductCategoryDaoFile implements ProductCategoryDao {
     public void remove(int id) {
         List<ProductCategory> productCategories = getAll();
         productCategories.removeIf(p -> p.getId() == id);
-        overWriteListOfCartsInFile(productCategories);
+        overWriteListOfProductCategoriesInFile(productCategories);
     }
 
     @Override
@@ -86,15 +85,17 @@ public class ProductCategoryDaoFile implements ProductCategoryDao {
 
     @Override
     public List<ProductCategory> getAll() {
-        return new ArrayList<>(productCategories);
+
     }
 
 
-    private void overWriteListOfCartsInFile(List<ProductCategory> productCategories) {
+    private void overWriteListOfProductCategoriesInFile(List<ProductCategory> productCategories) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCT_CATEGORY_FILE, false))) {
             for (ProductCategory productCategory : productCategories) {
-                String line = productCategory.getId() + DATA_SEPARATOR + productCategory.getName()
-                        + DATA_SEPARATOR + productCategory.getDescription() + DATA_SEPARATOR + productCategory.getDepartment();
+                String line = productCategory.getId() + DATA_SEPARATOR +
+                        productCategory.getName() + DATA_SEPARATOR +
+                        productCategory.getDescription() + DATA_SEPARATOR +
+                        productCategory.getDepartment();
                 writer.append(line).append(System.lineSeparator());
             }
         } catch (IOException e) {
