@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-import static java.net.NetworkInterface.getAll;
-
 public class LineItemDaoFile implements LineItemDao {
     private final File LINEITEM_FILE = new File("data/lineitems.csv");
     private int nextLineItemId;
@@ -57,9 +55,6 @@ public class LineItemDaoFile implements LineItemDao {
 
     @Override
     public void remove(LineItem lineItem) {
-        List<LineItem> lineItems = getAll();
-        lineItems.removeIf(c -> c.getId() == id);
-        overWriteListOfCartsInFile(lineItems);
     }
 
     @Override
@@ -98,16 +93,5 @@ public class LineItemDaoFile implements LineItemDao {
     @Override
     public List<LineItem> getBy(Cart cart) {
         return null;
-    }
-
-    private void overWriteListOfCartsInFile(List<LineItem> lineItems) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LINEITEM_FILE, false))) {
-            for (LineItem lineItem : lineItems) {
-                String line = lineItem.getId() + DATA_SEPARATOR + lineItem.getProduct() + DATA_SEPARATOR + lineItem.getCartId() + DATA_SEPARATOR + lineItem.getQuantity()
-                writer.append(line).append(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
