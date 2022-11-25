@@ -10,13 +10,34 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class ProductDaoFile implements ProductDao {
 
-    private final File PRODUCTS_FILE = new File("data/products.csv");
+    private static final File PRODUCTS_FILE = new File("data/products.csv");
     private static final String DATA_SEPARATOR = ";";
-    private int highestId;
+    private static int highestId;
+
+    public ProductDaoFile() {
+        highestId = findHighestId();
+    }
+    private static int findHighestId() {
+        int result;
+        try (Scanner scanner = new Scanner(PRODUCTS_FILE)) {
+            scanner.useDelimiter(DATA_SEPARATOR);
+            int lastUserId = 0;
+
+            while (scanner.hasNextLine()) {
+                lastUserId = scanner.nextInt();
+                scanner.nextLine();
+            }
+            result = lastUserId;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 
     @Override
     public void add(Product product) {
