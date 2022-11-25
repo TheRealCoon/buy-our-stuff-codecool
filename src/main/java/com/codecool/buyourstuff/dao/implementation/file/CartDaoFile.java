@@ -7,11 +7,35 @@ import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class CartDaoFile implements CartDao {
     private static final File CART_FILE = new File("data/cart.csv");
     private static final String DATA_SEPARATOR = ";";
     private static int highestId;
+
+    public CartDaoFile() {
+        if (CART_FILE.exists()) {
+            highestId = findHighestId();
+        }
+    }
+
+    private static int findHighestId() {
+        int result;
+        try (Scanner scanner = new Scanner(CART_FILE)) {
+            scanner.useDelimiter(DATA_SEPARATOR);
+            int lastUserId = 0;
+
+            while (scanner.hasNextLine()) {
+                lastUserId = scanner.nextInt();
+                scanner.nextLine();
+            }
+            result = lastUserId;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 
     @Override
     public void add(Cart cart) {
