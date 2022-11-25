@@ -1,7 +1,5 @@
 package com.codecool.buyourstuff.dao;
 
-import com.codecool.buyourstuff.dao.implementation.database.ProductCategoryDaoDb;
-import com.codecool.buyourstuff.dao.implementation.file.ProductCategoryDaoFile;
 import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import org.junit.jupiter.api.*;
@@ -10,8 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProductCategoryDaoTest {
     private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
-//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
-//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
+
 
     @Test
     void testAdd() {

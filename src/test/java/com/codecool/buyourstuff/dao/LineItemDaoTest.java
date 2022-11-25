@@ -1,7 +1,5 @@
 package com.codecool.buyourstuff.dao;
 
-import com.codecool.buyourstuff.dao.implementation.database.*;
-import com.codecool.buyourstuff.dao.implementation.file.*;
 import com.codecool.buyourstuff.model.*;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import org.junit.jupiter.api.AfterEach;

@@ -1,6 +1,5 @@
 package com.codecool.buyourstuff.dao;
 
-import com.codecool.buyourstuff.dao.implementation.file.SupplierDaoFile;
 import com.codecool.buyourstuff.model.Supplier;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SupplierDaoTest {
         private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
-//    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
 
     @Test
     void testAdd() {
