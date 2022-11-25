@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ProductCategoryDaoFile implements ProductCategoryDao {
 
-    private final File PRODUCT_CATEGORY_FILE = new File("data/productCategory.csv");
+    private static final File PRODUCT_CATEGORY_FILE = new File("data/productCategory.csv");
     private static final String DATA_SEPARATOR = ";";
     private int highestId;
 
