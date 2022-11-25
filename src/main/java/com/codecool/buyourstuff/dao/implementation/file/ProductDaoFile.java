@@ -79,8 +79,8 @@ public class ProductDaoFile implements ProductDao {
                     String currencyString = values[3];
                     String description = values[4];
                     ProductCategory productCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
-//                    Supplier supplier = new SupplierDaoFile().find(values[6]);
-//                    product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
+                    Supplier supplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
+                    product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
                     product.setId(resultId);
                 }
             }
@@ -127,10 +127,10 @@ public class ProductDaoFile implements ProductDao {
                 String currencyString = values[3];
                 String description = values[4];
                 ProductCategory productCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
-//                Supplier supplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
-//                Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
-//                product.setId(resultId);
-//                products.add(product);
+                Supplier supplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
+                Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
+                product.setId(resultId);
+                products.add(product);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,14 +156,14 @@ public class ProductDaoFile implements ProductDao {
                 String currencyString = values[3];
                 String description = values[4];
                 ProductCategory productCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
-//                Supplier foundSupplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
-//                if (supplier.getId() == foundSupplier.getId() ||
-//                        ((supplier.getName().equals(foundSupplier.getName()) &&
-//                                supplier.getDescription().equals(foundSupplier.getDescription())))) {
-//                    Product product = new Product(name, defaultPrice, currencyString, description, productCategory, foundSupplier);
-//                    product.setId(resultId);
-//                    products.add(product);
-//                }
+                Supplier foundSupplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
+                if (supplier.getId() == foundSupplier.getId() ||
+                        ((supplier.getName().equals(foundSupplier.getName()) &&
+                                supplier.getDescription().equals(foundSupplier.getDescription())))) {
+                    Product product = new Product(name, defaultPrice, currencyString, description, productCategory, foundSupplier);
+                    product.setId(resultId);
+                    products.add(product);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -190,13 +190,13 @@ public class ProductDaoFile implements ProductDao {
                 String currencyString = values[3];
                 String description = values[4];
                 ProductCategory foundProductCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
-//                Supplier supplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
+                Supplier supplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
                 if (productCategory.getId() == foundProductCategory.getId() ||
                         ((productCategory.getName().equals(foundProductCategory.getName()) &&
                                 productCategory.getDescription().equals(foundProductCategory.getDescription())))) {
-//                    Product product = new Product(name, defaultPrice, currencyString, description, foundProductCategory, supplier);
-//                    product.setId(resultId);
-//                    products.add(product);
+                    Product product = new Product(name, defaultPrice, currencyString, description, foundProductCategory, supplier);
+                    product.setId(resultId);
+                    products.add(product);
                 }
             }
         } catch (IOException e) {
