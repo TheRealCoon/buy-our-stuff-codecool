@@ -52,19 +52,17 @@ public class ProductDaoFile implements ProductDao {
         try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILE))) {
             while ((data = reader.readLine()) != null && product == null) {
                 lineCounter++;
-                String[] values = data.split(", ");
+                String[] values = data.split(DATA_SEPARATOR);
                 int resultId = Integer.parseInt(values[0]);
-                String name = values[1];
-                BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
-                String currencyString = values[3];
-                String description = values[4];
-                String productCategory = values[5];
-                String supplier = values[6];
-
                 if (resultId == id) {
+                    String name = values[1];
+                    BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
+                    String currencyString = values[3];
+                    String description = values[4];
+                    ProductCategory productCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
+                    Supplier supplier = new SupplierDaoFile().find(values[6]);
                     product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
                     product.setId(resultId);
-                    product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
                 }
             }
         } catch (IOException e) {
