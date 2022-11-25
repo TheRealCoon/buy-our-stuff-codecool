@@ -22,14 +22,6 @@ public class Product extends BaseModel {
         this.setProductCategory(productCategory);
     }
 
-    public Product(Supplier supplier) {
-        this.setSupplier(supplier);
-    }
-
-    public Product(ProductCategory productCategory) {
-        this.setProductCategory(productCategory);
-    }
-
     public BigDecimal getDefaultPrice(int decimals) {
         return defaultPrice.setScale(decimals, RoundingMode.HALF_DOWN);
     }
