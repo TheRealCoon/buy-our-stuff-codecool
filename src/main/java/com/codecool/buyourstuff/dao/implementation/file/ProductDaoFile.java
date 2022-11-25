@@ -126,7 +126,6 @@ public class ProductDaoFile implements ProductDao {
     @Override
     public List<Product> getBy(Supplier supplier) {
         List<Product> products = new ArrayList<>();
-        Product product = new Product(supplier);
         String line;
         int lineCounter = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILE))) {
@@ -135,12 +134,14 @@ public class ProductDaoFile implements ProductDao {
                 String[] values = line.split(DATA_SEPARATOR);
                 int resultId = Integer.parseInt(values[0]);
                 String name = values[1];
-                BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
+                BigDecimal defaultPrice = BigDecimal.valueOf(Double.parseDouble(values[2]));
                 String currencyString = values[3];
                 String description = values[4];
-                String productCategory = values[5];
-                String supplier = values[6];
-                if (supplier == String.valueOf(product.getSupplier())) {
+                ProductCategory productCategory = new ProductCategoryDaoFile().find(Integer.parseInt(values[5]));
+                Supplier foundSupplier = new SupplierDaoFile().find(Integer.parseInt(values[6]));
+                if (supplier.getId() == foundSupplier.getId() ||
+                        ((supplier.getName().equals(foundSupplier.getName()) &&
+                                supplier.getDescription().equals(foundSupplier.getDescription())))) {
                     Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
                     product.setId(resultId);
                     products.add(product);
