@@ -40,7 +40,6 @@ public class ProductCategoryDaoFile implements ProductCategoryDao {
 
     @Override
     public ProductCategory find(int id) {
-
         ProductCategory productCategory = null;
         String line;
         int lineCounter = 0;
@@ -49,10 +48,10 @@ public class ProductCategoryDaoFile implements ProductCategoryDao {
                 lineCounter++;
                 String[] values = line.split(DATA_SEPARATOR);
                 int resultId = Integer.parseInt(values[0]);
-                String name = values[1];
-                String description = values[2];
-                String department = values[3];
                 if (resultId == id) {
+                    String name = values[1];
+                    String description = values[2];
+                    String department = values[3];
                     productCategory = new ProductCategory(name, description, department);
                     productCategory.setId(resultId);
                 }
