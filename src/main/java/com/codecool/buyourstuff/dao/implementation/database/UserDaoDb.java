@@ -41,7 +41,7 @@ public class UserDaoDb implements UserDao {
             PreparedStatement st = con.prepareStatement(SQL);
             st.setString(1, userName);
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
                 String pw = rs.getString(3);
