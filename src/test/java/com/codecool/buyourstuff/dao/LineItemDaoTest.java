@@ -1,10 +1,20 @@
 package com.codecool.buyourstuff.dao;
 
+import com.codecool.buyourstuff.dao.implementation.database.LineItemDaoDb;
+import com.codecool.buyourstuff.dao.implementation.database.ProductCategoryDaoDb;
+import com.codecool.buyourstuff.dao.implementation.database.ProductDaoDb;
+import com.codecool.buyourstuff.dao.implementation.database.SupplierDaoDb;
+import com.codecool.buyourstuff.dao.implementation.file.LineItemDaoFile;
+import com.codecool.buyourstuff.dao.implementation.file.ProductCategoryDaoFile;
+import com.codecool.buyourstuff.dao.implementation.file.ProductDaoFile;
+import com.codecool.buyourstuff.dao.implementation.file.SupplierDaoFile;
 import com.codecool.buyourstuff.model.LineItem;
 import com.codecool.buyourstuff.model.Product;
 import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.Supplier;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -12,11 +22,38 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LineItemDaoTest {
-    private static final LineItemDao LINE_ITEM_DAO = DataManager.getLineItemDao();
+//    private static final LineItemDao LINE_ITEM_DAO = DataManager.getLineItemDao();
+//    private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
+//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
+//    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
+//
+//    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoFile();
+//    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
+//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
+//    private static final ProductDao PRODUCT_DAO = new ProductDaoFile();
+    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoDb();
+    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoDb();
+    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
+    private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
+
     private static Supplier testSupplier = new Supplier("test", "test");
     private static ProductCategory testProductCategory = new ProductCategory("test", "test", "test");
     private static Product testProduct = new Product("Test", new BigDecimal(12),
             "USD", "test", testProductCategory, testSupplier);
+
+    @BeforeEach
+    void setup() {
+        SUPPLIER_DAO.add(testSupplier);
+        PRODUCT_CATEGORY_DAO.add(testProductCategory);
+        PRODUCT_DAO.add(testProduct);
+    }
+
+    @AfterEach
+    void breakdown() {
+        SUPPLIER_DAO.remove(testSupplier.getId());
+        PRODUCT_CATEGORY_DAO.remove(testProductCategory.getId());
+        PRODUCT_DAO.remove(testProduct.getId());
+    }
 
     @Test
     void testAdd() {
