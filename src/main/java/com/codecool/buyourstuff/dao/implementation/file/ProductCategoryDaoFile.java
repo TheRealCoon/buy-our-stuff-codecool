@@ -76,16 +76,36 @@ public class ProductCategoryDaoFile implements ProductCategoryDao {
 
     @Override
     public void clear() {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCT_CATEGORY_FILE, false))) {
-                writer.append("");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCT_CATEGORY_FILE, false))) {
+            writer.append("");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
     @Override
     public List<ProductCategory> getAll() {
-
+        List<ProductCategory> productCategories = new ArrayList<>();
+        String line;
+        int lineCounter = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCT_CATEGORY_FILE))) {
+            while ((line = reader.readLine()) != null) {
+                lineCounter++;
+                String[] values = line.split(DATA_SEPARATOR);
+                int resultId = Integer.parseInt(values[0]);
+                String name = values[1];
+                String description = values[2];
+                String department = values[3];
+                ProductCategory productCategory = new ProductCategory(name, description, department);
+                productCategory.setId(resultId);
+                productCategories.add(productCategory);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID in file at line: " + lineCounter);
+        }
+        return productCategories;
     }
 
 
