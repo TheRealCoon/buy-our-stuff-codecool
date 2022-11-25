@@ -63,7 +63,7 @@ public class CartDaoDb implements CartDao {
         String SqlQuery = "DELETE FROM carts;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement ps = connection.prepareStatement(SqlQuery);
-            ps.execute();
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

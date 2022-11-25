@@ -14,13 +14,13 @@ public class SupplierDaoDb implements SupplierDao {
         final String SQL = "INSERT INTO suppliers (name, description) VALUES(?, ?);";
 
         try(Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
-            PreparedStatement st = con.prepareStatement(SQL);
-
+            PreparedStatement st = con.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, supplier.getName());
             st.setString(2, supplier.getDescription());
-
             st.executeUpdate();
-
+            ResultSet rs = st.getGeneratedKeys();
+            rs.next();
+            supplier.setId(rs.getInt(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class SupplierDaoDb implements SupplierDao {
 
     @Override
     public void clear() {
-        final String SQL = "TRUNCATE suppliers;";
+        final String SQL = "DELETE FROM suppliers;";
         try(Connection con = DriverManager.getConnection(DbLogin.URL, DbLogin.USER, DbLogin.PASSWORD)) {
             PreparedStatement st = con.prepareStatement(SQL);
             st.executeUpdate();
