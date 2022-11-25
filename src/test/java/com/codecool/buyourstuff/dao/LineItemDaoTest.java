@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +20,7 @@ public class LineItemDaoTest {
 //    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
 //    private static final CartDao CART_DAO = DataManager.getCartDao();
 
-//    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoFile();
+    //    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoFile();
 //    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
 //    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
 //    private static final ProductDao PRODUCT_DAO = new ProductDaoFile();
@@ -86,5 +87,14 @@ public class LineItemDaoTest {
         assertThrows(DataNotFoundException.class, () -> LINE_ITEM_DAO.find(lineItem.getId()));
     }
 
+    @Test
+    void getBy_validCart_returnsValid() {
+        LineItem lineItem = new LineItem(testProduct, testCart.getId(), 1);
+        LINE_ITEM_DAO.add(lineItem);
+
+        List<LineItem> result = LINE_ITEM_DAO.getBy(testCart);
+        assertEquals(lineItem.getId(), result.get(0).getId());
+        LINE_ITEM_DAO.remove(lineItem);
+    }
 
 }
