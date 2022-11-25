@@ -191,10 +191,13 @@ public class ProductDaoFile implements ProductDao {
     private void overWriteListOfProductsInFile(List<Product> products) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCTS_FILE, false))) {
             for (Product product : products) {
-                String line = product.getId() + DATA_SEPARATOR + product.getName()
-                        + DATA_SEPARATOR + product.getDefaultPrice() + DATA_SEPARATOR + product.getDefaultCurrency()
-                        + DATA_SEPARATOR + product.getDescription() + DATA_SEPARATOR + product.getProductCategory()
-                        + DATA_SEPARATOR + product.getSupplier();
+                String line = product.getId() + DATA_SEPARATOR +
+                        product.getName() + DATA_SEPARATOR +
+                        product.getDefaultPrice().toString() + DATA_SEPARATOR +
+                        product.getDefaultCurrency().toString() + DATA_SEPARATOR +
+                        product.getDescription() + DATA_SEPARATOR +
+                        product.getProductCategory().getId() + DATA_SEPARATOR +
+                        product.getSupplier().getId();
                 writer.append(line).append(System.lineSeparator());
             }
         } catch (IOException e) {
