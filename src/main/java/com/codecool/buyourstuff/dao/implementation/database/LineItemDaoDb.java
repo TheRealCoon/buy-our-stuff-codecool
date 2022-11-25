@@ -67,7 +67,8 @@ public class LineItemDaoDb implements LineItemDao {
         String sql = "UPDATE line_items SET quantity = ? WHERE line_items_id = ?;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(quantity, lineItem.getId());
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, lineItem.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
