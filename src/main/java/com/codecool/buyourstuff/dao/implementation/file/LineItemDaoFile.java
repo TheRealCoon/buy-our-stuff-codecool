@@ -1,7 +1,5 @@
 package com.codecool.buyourstuff.dao.implementation.file;
 
-import com.codecool.buyourstuff.dao.CartDao;
-import com.codecool.buyourstuff.dao.DataManager;
 import com.codecool.buyourstuff.dao.LineItemDao;
 import com.codecool.buyourstuff.model.*;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
@@ -14,39 +12,42 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LineItemDaoFile implements LineItemDao {
-    private final File LINEITEM_FILE = new File("data/lineitems.csv");
-    private int nextLineItemId;
+    private static final File LINE_ITEM_FILE = new File("data/lineitems.csv");
     private static final String DATA_SEPARATOR = ";";
-    private static int highestID;
+    private static int highestId;
 
     public LineItemDaoFile() {
-        if (LINEITEM_FILE.exists()) {
-            try (Scanner scanner = new Scanner(LINEITEM_FILE)) {
-                scanner.useDelimiter(",");
-                while (scanner.hasNextLine()) {
-                    scanner.nextLine();
-                }
-                scanner.findInLine("id=");
-                int lastUserId = scanner.nextInt();
-                nextLineItemId = lastUserId + 1;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        highestId = findHighestId();
+    }
+
+    private static int findHighestId() {
+        int result = 0;
+        try (Scanner scanner = new Scanner(LINE_ITEM_FILE)) {
+            scanner.useDelimiter(DATA_SEPARATOR);
+            while (scanner.hasNextLine()) {
+                result = scanner.nextInt();
+                scanner.nextLine();
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        else nextLineItemId = 1;
+        return result;
     }
 
     @Override
     public void add(LineItem lineItem) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LINEITEM_FILE, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LINE_ITEM_FILE, true))) {
             int id = lineItem.getId();
-            if (id == 0) {
-                id = ++highestID;
+            if (id <=highestId) {
+                id = ++highestId;
                 lineItem.setId(id);
-            } else if (id > highestID) {
-                highestID = id;
+            } else {
+                highestId = id;
             }
-            String line = id + DATA_SEPARATOR + lineItem.getProduct() + DATA_SEPARATOR + lineItem.getCartId() + DATA_SEPARATOR + lineItem.getQuantity();
+            String line = id + DATA_SEPARATOR +
+                    lineItem.getProduct().getId() + DATA_SEPARATOR +
+                    lineItem.getCartId() + DATA_SEPARATOR +
+                    lineItem.getQuantity();
             writer.append(line).append(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class LineItemDaoFile implements LineItemDao {
     @Override
     public void clear() {
         try {
-            new FileWriter(LINEITEM_FILE, false).close();
+            new FileWriter(LINE_ITEM_FILE, false).close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +75,7 @@ public class LineItemDaoFile implements LineItemDao {
 
     @Override
     public LineItem find(int id) {
-        try (Scanner scanner = new Scanner(LINEITEM_FILE)) {
+        try (Scanner scanner = new Scanner(LINE_ITEM_FILE)) {
             while (scanner.hasNextLine()) {
                 LineItem lineItem = new LineItem(
                         String.valueOf(scanner.nextInt()),
