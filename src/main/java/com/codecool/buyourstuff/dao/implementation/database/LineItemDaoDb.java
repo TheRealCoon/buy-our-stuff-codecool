@@ -23,7 +23,7 @@ public class LineItemDaoDb implements LineItemDao {
 
         String sql = "INSERT INTO line_items(product_id, cart_id, quantity) VALUES(?, ?, ?);";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, lineItem.getProduct().getId());
             ps.setInt(2, lineItem.getCartId());
             ps.setInt(3, lineItem.getQuantity());
@@ -38,11 +38,11 @@ public class LineItemDaoDb implements LineItemDao {
 
     @Override
     public void remove(LineItem lineItem) {
-        String sql = "DELETE FROM line_items WHERE id = ?;";
+        String sql = "DELETE FROM line_items WHERE line_items_id = ?;";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, lineItem.getId());
-            if (!preparedStatement.execute()) throw new DataNotFoundException("No line item found!");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,7 +62,7 @@ public class LineItemDaoDb implements LineItemDao {
     @Override
     public void update(LineItem lineItem, int quantity) {
         int productId = lineItem.getProduct().getId();
-        String sql = "UPDATE line_item SET quantity = " + quantity + " WHERE product_id = " + productId;
+        String sql = "UPDATE line_item SET quantity = " + quantity + " WHERE line_items_id = " + productId;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
@@ -73,7 +73,7 @@ public class LineItemDaoDb implements LineItemDao {
 
     @Override
     public LineItem find(int id) {
-        String SqlQuery = "SELECT l.product_id, l.cart_id, l.quantity " +
+        String SqlQuery = "SELECT l.product_id, l.cart_id, l.quantity, " +
                 "p.\"name\", p.price, p.currency, p.description, " +
                 "pc.product_category_id, pc.\"name\", pc.description, pc.department, " +
                 "s.supplier_id, s.\"name\", s.description " +
@@ -102,6 +102,7 @@ public class LineItemDaoDb implements LineItemDao {
                 Product product = new Product(productName, price, currency, productDescription, pc, supplier);
                 product.setId(productId);
                 lineItem = new LineItem(product, cartId, quantity);
+                lineItem.setId(id);
             } else throw new DataNotFoundException("No such product");
         } catch (SQLException e) {
             e.printStackTrace();
