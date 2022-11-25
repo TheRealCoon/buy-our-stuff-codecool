@@ -11,17 +11,17 @@ import java.util.List;
 public class CartDaoFile implements CartDao {
     private static final String CART_FILE = "data/cart.csv";
     private static final String DATA_SEPARATOR = ";";
-    private static int highestID;
+    private static int highestId;
 
     @Override
     public void add(Cart cart) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, true))) {
             int id = cart.getId();
-            if (id == 0) {
-                id = ++highestID;
+            if (id <= highestId) {
+                id = ++highestId;
                 cart.setId(id);
-            } else if (id > highestID) {
-                highestID = id;
+            } else {
+                highestId = id;
             }
             String line = id + DATA_SEPARATOR + cart.getCurrency();
             writer.append(line).append(System.lineSeparator());

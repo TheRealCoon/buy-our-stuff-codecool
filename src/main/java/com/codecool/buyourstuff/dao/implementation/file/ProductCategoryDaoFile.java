@@ -12,23 +12,26 @@ import java.util.List;
 
 public class ProductCategoryDaoFile implements ProductCategoryDao {
 
-    private final File PRODUCT_CATEGORY_FILE = new File("data/product_category.csv");
+    private final File PRODUCT_CATEGORY_FILE = new File("data/productCategory.csv");
     private List<ProductCategory> productCategories = new ArrayList<>();
     private static final String DATA_SEPARATOR = ";";
-    private int highestID;
+    private int highestId;
 
 
     @Override
     public void add(ProductCategory category) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCT_CATEGORY_FILE, true))) {
             int id = category.getId();
-            if (id == 0) {
-                id = ++highestID;
+            if (id <= highestId) {
+                id = ++highestId;
                 category.setId(id);
-            } else if (id > highestID) {
-                highestID = id;
+            } else {
+                highestId = id;
             }
-            String line = id + DATA_SEPARATOR + category.getDescription() + DATA_SEPARATOR + category.getDepartment();
+            String line = id + DATA_SEPARATOR +
+                    category.getName() + DATA_SEPARATOR +
+                    category.getDescription() + DATA_SEPARATOR +
+                    category.getDepartment();
             writer.append(line).append(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();

@@ -15,17 +15,17 @@ import java.util.List;
 public class ProductDaoFile implements ProductDao {
 
     private final File PRODUCTS_FILE = new File("data/products.csv");
-    private static final String DATA_SEPARATOR = ", ";
+    private static final String DATA_SEPARATOR = ";";
     private int highestId;
 
     @Override
     public void add(Product product) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCTS_FILE, true))) {
             int id = product.getId();
-            if (id == 0) {
+            if (id <= highestId) {
                 id = ++highestId;
                 product.setId(id);
-            } else if (id > highestId) {
+            } else {
                 highestId = id;
             }
             String data =
