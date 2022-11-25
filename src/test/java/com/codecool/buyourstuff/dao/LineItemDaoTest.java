@@ -1,10 +1,7 @@
 package com.codecool.buyourstuff.dao;
 
 import com.codecool.buyourstuff.dao.implementation.database.*;
-import com.codecool.buyourstuff.dao.implementation.file.LineItemDaoFile;
-import com.codecool.buyourstuff.dao.implementation.file.ProductCategoryDaoFile;
-import com.codecool.buyourstuff.dao.implementation.file.ProductDaoFile;
-import com.codecool.buyourstuff.dao.implementation.file.SupplierDaoFile;
+import com.codecool.buyourstuff.dao.implementation.file.*;
 import com.codecool.buyourstuff.model.*;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
 import org.junit.jupiter.api.AfterEach;
@@ -20,11 +17,13 @@ public class LineItemDaoTest {
 //    private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
 //    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
 //    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
-//
+//    private static final CartDao CART_DAO = DataManager.getCartDao();
+
 //    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoFile();
 //    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
 //    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
 //    private static final ProductDao PRODUCT_DAO = new ProductDaoFile();
+//    private static final CartDao CART_DAO = new CartDaoFile();
     private static final SupplierDao SUPPLIER_DAO = new SupplierDaoDb();
     private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
     private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
