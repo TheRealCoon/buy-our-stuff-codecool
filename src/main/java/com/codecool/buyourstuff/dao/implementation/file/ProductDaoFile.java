@@ -14,19 +14,31 @@ import java.util.List;
 public class ProductDaoFile implements ProductDao {
 
     private final File PRODUCTS_FILE = new File("data/products.csv");
-    private int nextId;
 
     private List<Product> product = new ArrayList<>();
+    private static final String DATA_SEPARATOR = ", ";
 
-    private static final String DATA_SEPARATOR = ";";
-
+    private int highestId;
 
     @Override
     public void add(Product product) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCTS_FILE, true))) {
-            String data = product.getId() + ", " + product.getDefaultPrice() + ", " + product.getDefaultCurrency()
-                    + ", " + product.getDescription() + ", " + product.getProductCategory() + ", " + product.getSupplier();
-            writer.append(data);
+            int id = product.getId();
+            if (id == 0) {
+                id = ++highestId;
+                product.setId(id);
+            } else if (id > highestId) {
+                highestId = id;
+            }
+            String data =
+                    product.getId() + DATA_SEPARATOR +
+                            product.getName() + DATA_SEPARATOR +
+                            product.getDefaultPrice() + DATA_SEPARATOR +
+                            product.getDefaultCurrency().toString() + DATA_SEPARATOR +
+                            product.getDescription() + DATA_SEPARATOR +
+                            product.getProductCategory().getId() + DATA_SEPARATOR +
+                            product.getSupplier().getId();
+            writer.append(data).append(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,32 +97,33 @@ public class ProductDaoFile implements ProductDao {
 
     @Override
     public List<Product> getAll() {
-            List<Product> products = new ArrayList<>();
-            String line;
-            int lineCounter = 0;
-            try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILE))) {
-                while ((line = reader.readLine()) != null) {
-                    lineCounter++;
-                    String[] values = line.split(DATA_SEPARATOR);
-                    int resultId = Integer.parseInt(values[0]);
-                    String name = values[1];
-                    BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));;
-                    String currencyString = values[3];
-                    String description = values[4];
-                    String productCategory = values[5];
-                    String supplier = values[6];
-                    Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
-                    product.setId(resultId);
-                    products.add(product);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (
-                    NumberFormatException e) {
-                System.out.println("Invalid ID in file at line: " + lineCounter);
+        List<Product> products = new ArrayList<>();
+        String line;
+        int lineCounter = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILE))) {
+            while ((line = reader.readLine()) != null) {
+                lineCounter++;
+                String[] values = line.split(DATA_SEPARATOR);
+                int resultId = Integer.parseInt(values[0]);
+                String name = values[1];
+                BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
+                ;
+                String currencyString = values[3];
+                String description = values[4];
+                String productCategory = values[5];
+                String supplier = values[6];
+                Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
+                product.setId(resultId);
+                products.add(product);
             }
-            return products;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (
+                NumberFormatException e) {
+            System.out.println("Invalid ID in file at line: " + lineCounter);
         }
+        return products;
+    }
 
     @Override
     public List<Product> getBy(Supplier supplier) {
@@ -120,15 +133,15 @@ public class ProductDaoFile implements ProductDao {
         int lineCounter = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILE))) {
             while ((line = reader.readLine()) != null) {
-                    lineCounter++;
-                    String[] values = line.split(DATA_SEPARATOR);
-                    int resultId = Integer.parseInt(values[0]);
-                    String name = values[1];
-                    BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
-                    String currencyString = values[3];
-                    String description = values[4];
-                    String productCategory = values[5];
-                    String supplier = values[6];
+                lineCounter++;
+                String[] values = line.split(DATA_SEPARATOR);
+                int resultId = Integer.parseInt(values[0]);
+                String name = values[1];
+                BigDecimal defaultPrice = BigDecimal.valueOf(Long.parseLong(values[2]));
+                String currencyString = values[3];
+                String description = values[4];
+                String productCategory = values[5];
+                String supplier = values[6];
                 if (supplier == String.valueOf(product.getSupplier())) {
                     Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
                     product.setId(resultId);
@@ -153,16 +166,16 @@ public class ProductDaoFile implements ProductDao {
         int lineCounter = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILE))) {
             while ((line = reader.readLine()) != null) {
-                    lineCounter++;
-                    String[] values = line.split(DATA_SEPARATOR);
-                    int resultId = Integer.parseInt(values[0]);
-                    String name = values[1];
-                    BigDecimal defaultPrice = new BigDecimal(values[2]);
-                    String currencyString = values[3];
-                    String description = values[4];
-                    ProductCategory productCategory = values[5];
-                    String supplier = values[6];
-                    if (productCategory == product.getProductCategory())) {
+                lineCounter++;
+                String[] values = line.split(DATA_SEPARATOR);
+                int resultId = Integer.parseInt(values[0]);
+                String name = values[1];
+                BigDecimal defaultPrice = new BigDecimal(values[2]);
+                String currencyString = values[3];
+                String description = values[4];
+                ProductCategory productCategory = values[5];
+                String supplier = values[6];
+                if (productCategory == product.getProductCategory())){
                     Product product = new Product(name, defaultPrice, currencyString, description, productCategory, supplier);
                     product.setId(resultId);
                     products.add(product);
@@ -176,6 +189,7 @@ public class ProductDaoFile implements ProductDao {
         }
         return products;
     }
+
     private void overWriteListOfCartsInFile(List<Product> products) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PRODUCTS_FILE, false))) {
             for (Product product : products) {
