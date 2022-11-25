@@ -40,14 +40,14 @@ public class DaoImplementationSupplier {
 //                        new UserDaoFile()
 //                );
             case DATABASE:
-//                return new DaoImplementationSupplier(
-//                        new ProductDaoDb(),
-//                        new ProductCategoryDaoDb(),
-//                        new SupplierDaoDb(),
-//                        new CartDaoDb(),
-//                        new LineItemDaoDb(),
-//                        new UserDaoDb()
-//                );
+                return new DaoImplementationSupplier(
+                        new ProductDaoDb(),
+                        new ProductCategoryDaoDb(),
+                        new SupplierDaoDb(),
+                        new CartDaoDb(),
+                        new LineItemDaoDb(),
+                        new UserDaoDb()
+                );
 
             case MEMORY:
                 return new DaoImplementationSupplier(

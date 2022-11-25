@@ -3,14 +3,17 @@ package com.codecool.buyourstuff.dao.implementation.database;
 import com.codecool.buyourstuff.dao.LineItemDao;
 import com.codecool.buyourstuff.model.*;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
+
 import java.math.BigDecimal;
 import java.sql.*;
+
 import com.codecool.buyourstuff.dao.ProductDao;
 import com.codecool.buyourstuff.model.Cart;
 import com.codecool.buyourstuff.model.LineItem;
 import com.codecool.buyourstuff.model.Product;
 import com.codecool.buyourstuff.model.ProductCategory;
 import com.codecool.buyourstuff.model.exception.DataNotFoundException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +113,7 @@ public class LineItemDaoDb implements LineItemDao {
         return lineItem;
     }
 
+    @Override
     public List<LineItem> getBy(Cart cart) {
         String sql = "SELECT l.line_items_id, l.product_id, l.cart_id, l.quantity, " +
                 "p.\"name\", p.price, p.currency, p.description, " +
@@ -145,7 +149,7 @@ public class LineItemDaoDb implements LineItemDao {
                 lineItem.setId(lineItemId);
                 result.add(lineItem);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;

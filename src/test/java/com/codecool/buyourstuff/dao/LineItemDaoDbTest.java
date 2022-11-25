@@ -12,7 +12,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LineItemDaoDbTest {
-    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoDb();
+//    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoDb();
+//    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
+//    private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
+//    private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoDb();
+//    private static final CartDao CART_DAO = new CartDaoDb();
+private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
     private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
     private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
     private static final LineItemDao LINE_ITEM_DAO = new LineItemDaoDb();
