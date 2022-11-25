@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProductDaoTest {
 //    private static final ProductDao PRODUCT_DAO = DataManager.getProductDao();
 //    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = DataManager.getProductCategoryDao();
-//    private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
+    private static final SupplierDao SUPPLIER_DAO = DataManager.getSupplierDao();
 
 //    private static final ProductDao PRODUCT_DAO = new ProductDaoDb();
 //    private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoDb();
@@ -29,7 +29,7 @@ public class ProductDaoTest {
 
     private static final ProductDao PRODUCT_DAO = new ProductDaoFile();
     private static final ProductCategoryDao PRODUCT_CATEGORY_DAO = new ProductCategoryDaoFile();
-    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoMem();
+//    private static final SupplierDao SUPPLIER_DAO = new SupplierDaoFile();
 
     private static Supplier testSupplier = new Supplier("test", "test");
     private static ProductCategory testProductCategory = new ProductCategory("test", "test", "test");
