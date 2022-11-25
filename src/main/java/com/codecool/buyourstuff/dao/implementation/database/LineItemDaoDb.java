@@ -111,7 +111,7 @@ public class LineItemDaoDb implements LineItemDao {
     }
 
     public List<LineItem> getBy(Cart cart) {
-        String sql = "SELECT l.product_id, l.cart_id, l.quantity " +
+        String sql = "SELECT l.line_items_id, l.product_id, l.cart_id, l.quantity, " +
                 "p.\"name\", p.price, p.currency, p.description, " +
                 "pc.product_category_id, pc.\"name\", pc.description, pc.department, " +
                 "s.supplier_id, s.\"name\", s.description " +
@@ -127,20 +127,22 @@ public class LineItemDaoDb implements LineItemDao {
             ps.setInt(1, cart.getId());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int productId = rs.getInt(1);
-                int cartId = rs.getInt(2);
-                int quantity = rs.getInt(3);
-                String productName = rs.getString(4);
-                BigDecimal price = rs.getBigDecimal(5);
-                String currency = rs.getString(6);
-                String productDescription = rs.getString(7);
-                ProductCategory pc = new ProductCategory(rs.getString(9), rs.getString(10), rs.getString(11));
-                pc.setId(rs.getInt(8));
-                Supplier supplier = new Supplier(rs.getString(13), rs.getString(14));
-                supplier.setId(rs.getInt(12));
+                int lineItemId = rs.getInt(1);
+                int productId = rs.getInt(2);
+                int cartId = rs.getInt(3);
+                int quantity = rs.getInt(4);
+                String productName = rs.getString(5);
+                BigDecimal price = rs.getBigDecimal(6);
+                String currency = rs.getString(7);
+                String productDescription = rs.getString(8);
+                ProductCategory pc = new ProductCategory(rs.getString(10), rs.getString(11), rs.getString(12));
+                pc.setId(rs.getInt(9));
+                Supplier supplier = new Supplier(rs.getString(14), rs.getString(15));
+                supplier.setId(rs.getInt(13));
                 Product product = new Product(productName, price, currency, productDescription, pc, supplier);
                 product.setId(productId);
                 LineItem lineItem = new LineItem(product, cartId, quantity);
+                lineItem.setId(lineItemId);
                 result.add(lineItem);
             }
         }catch (SQLException e) {
