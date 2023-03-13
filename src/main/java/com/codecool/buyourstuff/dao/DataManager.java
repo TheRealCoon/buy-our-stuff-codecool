@@ -5,7 +5,6 @@ import com.codecool.buyourstuff.util.BaseData;
 
 public class DataManager {
     private static final DaoType DAO_TYPE = DaoType.DATABASE;
-
     private static final DaoImplementationSupplier daoImplementationSupplier = DaoImplementationSupplier.getInstance(DAO_TYPE);
 
     private static final ProductDao productDao = daoImplementationSupplier.getProductDao();

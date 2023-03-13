@@ -1,11 +1,4 @@
-import com.codecool.buyourstuff.model.Product;
-import com.codecool.buyourstuff.model.ProductCategory;
-import com.codecool.buyourstuff.model.Supplier;
-import com.codecool.buyourstuff.model.User;
-import com.codecool.buyourstuff.util.BaseData;
-
 import java.sql.*;
-import java.util.List;
 
 public class CreateDB {
     //TODO you need to set 'USER' and 'PASSWORD' in environment variables
